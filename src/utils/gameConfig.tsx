@@ -8,7 +8,7 @@ export const ticTacToe_CONFIG = {
     winner: '',
     gameType: 'nine',
     gameOver: false,
-    finishCount: 2,
+    finishCount: 3,
     time: 60,
 };
 export const goMoKu_CONFIG = {
@@ -21,6 +21,6 @@ export const goMoKu_CONFIG = {
     winner: '',
     gameType: 'five',
     gameOver: false,
-    finishCount: 4,
+    finishCount: 5,
     time: 60,
 };
