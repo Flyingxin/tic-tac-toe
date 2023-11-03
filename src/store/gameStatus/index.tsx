@@ -1,3 +1,4 @@
+import { goMoKu_CONFIG } from '@/utils/gameConfig';
 export interface stateTypes {
     name: string;
     boardSize: number;
@@ -12,18 +13,6 @@ export interface stateTypes {
     time: number;
 }
 
-const initialState: stateTypes = {
-    name: '五字棋',
-    boardSize: 14,
-    activeUser: 'black',
-    chess: ['white', 'black'],
-    mode: 'pve',
-    first: 'human',
-    winner: '',
-    gameType: 'five',
-    gameOver: false,
-    finishCount: 4,
-    time: 60,
-};
+const initialState: stateTypes = goMoKu_CONFIG;
 
 export default initialState;
