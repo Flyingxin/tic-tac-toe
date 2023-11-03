@@ -13,7 +13,7 @@ export const ticTacToe_CONFIG = {
 };
 export const goMoKu_CONFIG = {
     name: '五字棋',
-    boardSize: 15,
+    boardSize: 14,
     activeUser: 'black',
     chess: ['white', 'black'],
     mode: 'pve',

@@ -14,7 +14,7 @@ export interface stateTypes {
 
 const initialState: stateTypes = {
     name: '五字棋',
-    boardSize: 15,
+    boardSize: 14,
     activeUser: 'black',
     chess: ['white', 'black'],
     mode: 'pve',
