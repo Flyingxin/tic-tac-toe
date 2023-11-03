@@ -15,7 +15,7 @@ function Notification () {
 
             <h3>胜利方为：{gameState.winner === ticTacToe_CONFIG.activeUser ?
                 ticTacToe_CONFIG.chess[1] :
-                goMoKu_CONFIG.chess[0]}
+                ticTacToe_CONFIG.chess[0]}
             </h3>
     );
     const notification = (

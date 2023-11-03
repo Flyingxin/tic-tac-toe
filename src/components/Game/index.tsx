@@ -13,7 +13,7 @@ import './index.css';
 function Game () {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
-    const { boardSize, gameType } = gameState;
+    const { boardSize, gameType, gameOver, chess } = gameState;
 
     const [gameTypes, setGameType] = useState(gameType);
     const [history, setHistory] = useState([initBoard(boardSize)]);
@@ -84,9 +84,9 @@ function Game () {
         if (step === history.length - 1) return;
         setCurrentMove(step);
         setStepBtnActive(step);
-        if (gameState.gameOver) {
+        if (gameOver) {
             dispatch(start_game({
-                activeUser: gameState.chess[step % 2],
+                activeUser: step % 2 === 0 ? chess[1] : chess[0],
                 winner: '',
                 gameOver: false,
             }));
