@@ -8,19 +8,21 @@ import './index.css';
 interface BoardType {
     nextChessIndex: number;
     squares: string[][];
+    currentMove:number;
     onPlay: Function;
 }
 /**
  * 棋盘组件，用于展示棋盘基础功能
  * @param nextChessIndex 下一个棋子索引
  * @param squares 棋盘信息
+ * @param currentMove 棋步数
  * @param onPlay 记录棋盘信息
  * @returns component
  */
-function Board ({ nextChessIndex, squares, onPlay }: BoardType) {
+function Board ({ nextChessIndex, squares, currentMove, onPlay }: BoardType) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
-    const { gameOver, finishCount, activeUser, chess } = gameState;
+    const { gameOver, finishCount, activeUser, chess, boardSize } = gameState;
     const nextChess = chess[nextChessIndex];
 
     /**
@@ -34,9 +36,10 @@ function Board ({ nextChessIndex, squares, onPlay }: BoardType) {
 
         const coordinate: number[] = [row, colum];
         const nextSquares: string[][] = JSON.parse(JSON.stringify(squares));  // 深拷贝 slice是浅拷贝
+        
         nextSquares[row][colum] = activeUser;
         onPlay(nextSquares);
-
+        
         // console.log(nextChessIndex, activeUser, nextChess);
         if (calculateWinner(coordinate, activeUser, finishCount, squares)) {
             const obj = {
@@ -44,11 +47,18 @@ function Board ({ nextChessIndex, squares, onPlay }: BoardType) {
                 gameOver: true,
             };
             dispatch(end_game(obj));
+        }else if (currentMove === boardSize*boardSize -1) {
+            const obj = {
+                winner: '',
+                gameOver: true,
+            };
+            console.log(obj);
+            
+            dispatch(end_game(obj));            
         } else {
             dispatch(play_game({ activeUser: nextChess }));
         }
     }
-
     /**
      * 渲染棋盘
      * @returns string[][]

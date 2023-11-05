@@ -9,23 +9,25 @@ import './index.css';
  */
 function Notification () {
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
-    const winner = (
-        gameState.gameType === goMoKu_CONFIG.gameType ?
-            <h3>胜利方为：{gameState.winner === goMoKu_CONFIG.activeUser ? '黑方' : '白方'}</h3> :
+    const {gameType,gameOver,winner} = gameState
+    const winners = (
+        gameType === goMoKu_CONFIG.gameType ?
+            <h3>胜利方为：{winner === goMoKu_CONFIG.activeUser ? '黑方' : '白方'}</h3> :
 
-            <h3>胜利方为：{gameState.winner === ticTacToe_CONFIG.activeUser ?
+            <h3>胜利方为：{winner === ticTacToe_CONFIG.activeUser ?
                 ticTacToe_CONFIG.chess[1] :
                 ticTacToe_CONFIG.chess[0]}
             </h3>
     );
+    const peace = ( <h3>和棋</h3>)
     const notification = (
-        !gameState.gameOver ?
+        !gameOver ?
             (<div style={{ display: 'none' }}></div>) :
             (<div className='notificationWrapper'>
                 <div className='notificationBg'></div>
                 <div className='notificationContent'>
                     <h1>游戏结束!</h1>
-                    {winner}
+                    {winner === ''? peace: winners}
                 </div>
             </div>)
     );

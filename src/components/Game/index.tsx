@@ -13,7 +13,7 @@ import './index.css';
 function Game () {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
-    const { boardSize, gameType, gameOver, chess } = gameState;
+    const { boardSize, gameType, chess } = gameState;
 
     const [gameTypes, setGameType] = useState(gameType);
     const [history, setHistory] = useState([initBoard(boardSize)]);
@@ -21,7 +21,6 @@ function Game () {
     const [stepBtnActive, setStepBtnActive] = useState(0);
     const nextChessIndex = currentMove % 2;
     const currentSquares = history[currentMove];
-
     // 切换游戏时
     if (gameTypes !== gameType) {
         setGameType(gameType);
@@ -81,16 +80,13 @@ function Game () {
      * return void
      */
     function jumpTo (step: number) {
-        if (step === history.length - 1) return;
         setCurrentMove(step);
         setStepBtnActive(step);
-        if (gameOver) {
-            dispatch(start_game({
-                activeUser: step % 2 === 0 ? chess[1] : chess[0],
-                winner: '',
-                gameOver: false,
-            }));
-        }
+        dispatch(start_game({
+            activeUser: step % 2 === 0 ? chess[1] : chess[0],
+            winner: '',
+            gameOver: false,
+        }));
     }
     return (
         <div className="game-status">
@@ -98,6 +94,7 @@ function Game () {
                 <Board
                     nextChessIndex={nextChessIndex}
                     squares={currentSquares}
+                    currentMove = {currentMove}
                     onPlay={handlePlay} />
                 <Notification></Notification>
             </div>
