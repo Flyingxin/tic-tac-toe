@@ -2,7 +2,6 @@ import { useSelector } from 'react-redux';
 import GAME_CONFIG, { stateTypes } from '@/components/Game/gameConfig';
 // styles
 import './index.css';
-
 /**
  * 状态栏组件，呈现玩家棋子组件
  * @returns component

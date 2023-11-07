@@ -2,7 +2,6 @@ import Game from './components/Game';
 import Header from './components/Header';
 import StatusBar from './components/StatusBar';
 import './App.css';
-
 // interface appType {
 //     dispatch: Function;
 //     gameState: stateTypes;

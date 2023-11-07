@@ -14,17 +14,15 @@ export default function Game () {
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
     const { boardSize, chess, gameType } = gameState;
 
-    // const [gameMode, setGameMode] = useState(gameType);
     const [history, setHistory] = useState([initBoard(boardSize)]);
     const [currentMove, setCurrentMove] = useState(0);
-    const [stepBtnActive, setStepBtnActive] = useState(0);
     const nextChessIndex = currentMove % 2;
     const currentSquares = history[currentMove];
 
+    // 切换游戏
     useEffect(() => {
         setHistory([initBoard(boardSize)]);
         setCurrentMove(0);
-        setStepBtnActive(0);
     }, [gameType]);
 
     /**
@@ -61,7 +59,7 @@ export default function Game () {
             description = `${step}执棋  ${chess[step % 2]}` :
             description = '游戏开始';
 
-        const className = stepBtnActive === step ? 'game-step-button--active' : 'game-step-button';
+        const className = currentMove === step ? 'game-step-button--active' : 'game-step-button';
         return (
             <li key={step}>
                 <button className={className} onClick={() => jumpTo(step)}>{description}</button>
@@ -75,9 +73,8 @@ export default function Game () {
      * return void
      */
     function jumpTo (step: number) {
-        if (step === history.length - 1) return;
+        if (step === currentMove) return;
         setCurrentMove(step);
-        setStepBtnActive(step);
         dispatch(startGame({
             activeUser: step % 2 === 0 ? chess[1] : chess[0],
             winner: '',

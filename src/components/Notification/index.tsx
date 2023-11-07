@@ -5,7 +5,7 @@ import './index.css';
  * 通知栏组件，用于展示游戏是否结束
  * @returns component
  */
-export default function Notification () {
+const Notification = () => {
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
     const { gameOver, winner } = gameState;
 
@@ -24,4 +24,5 @@ export default function Notification () {
                 </div>
             </div>)
     );
-}
+};
+export default  Notification;

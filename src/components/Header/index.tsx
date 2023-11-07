@@ -14,6 +14,7 @@ export default function Header () {
     const { activeUser, chess, gameOver, gameType, time } = gameState;
     const [countdown, setCountdown] = useState(GAME_CONFIG[gameType].time);
     const [currentChess, setCurrentChess] = useState(activeUser);
+
     /**
      * 切换游戏
      * @param event

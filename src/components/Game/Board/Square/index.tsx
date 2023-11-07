@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { useSelector } from 'react-redux';
 import GAME_CONFIG, { stateTypes } from '@/components/Game/gameConfig';
 import './index.css';
@@ -11,10 +12,10 @@ interface SquareType {
  * @param onSquareClick  格子点击事件
  * @returns
  */
-const Square = ({ value, onSquareClick }: SquareType) => {
+const Square = memo(({ value, onSquareClick }: SquareType) => {
     const { gameType, activeUserClass } = useSelector((state: { gameState: stateTypes }) => state.gameState);
 
-    // 格子节点
+    // 小格子节点
     const gameList = Object.keys(GAME_CONFIG);
     const squareEl = gameList.map((_item, index) => {
         if (gameType === gameList[index]) {
@@ -28,5 +29,5 @@ const Square = ({ value, onSquareClick }: SquareType) => {
         }
     });
     return squareEl;
-};
+});
 export default Square;
