@@ -59,7 +59,6 @@ export default function Game ({ isToggleGame }: gameTypes) {
         setHistory(nextHistory);
     }
 
-
     /**
      * 渲染回退按钮
      */
@@ -76,6 +75,7 @@ export default function Game ({ isToggleGame }: gameTypes) {
             </li>
         );
     });
+
     /**
      * 悔棋
      * @param lastMove
@@ -91,6 +91,7 @@ export default function Game ({ isToggleGame }: gameTypes) {
             gameOver: false,
         }));
     }
+
     return (
         <div className="game-status">
             <div className="game-board">

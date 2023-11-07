@@ -20,7 +20,7 @@ module.exports = {
         'no-unused-vars': 'error',
         'object-shorthand': 'error',
         quotes: ['error', 'single'],
-        indent: ['error', 4],
+        indent: ['error', 4, { SwitchCase: 1 }],
         // "semi-style": ["error", "last"],
         // ...
     },

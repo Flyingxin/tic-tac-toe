@@ -61,11 +61,13 @@ export default function Header ({ toggleGame }:headerType) {
         dispatch(endGame(obj));
         setCountdown(GAME_CONFIG[gameType].time);
     }, [countdown]);
+
     // 切换用户时重新计时
     if (currentChess !== activeUser) {
         setCurrentChess(activeUser);
         setCountdown(time);
     }
+
     // 倒计时
     let countdownEl: JSX.Element;
     gameOver ?
@@ -79,7 +81,6 @@ export default function Header ({ toggleGame }:headerType) {
             );
 
     return (
-
         <div className='toolbar'>
             <select
                 className='gameType'
@@ -93,3 +94,4 @@ export default function Header ({ toggleGame }:headerType) {
         </div>
     );
 }
+

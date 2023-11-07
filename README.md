@@ -15,7 +15,7 @@ npm run start
 ## 语法检查
 
 ```
-npm run eslint
+npm run lint
 ```
 
 ## 项目打包

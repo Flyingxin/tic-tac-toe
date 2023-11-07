@@ -15,6 +15,7 @@ interface SquareType {
 const Square = ({ value, onSquareClick }: SquareType) => {
     const { gameType, activeUserClass } = useSelector((state: { gameState: stateTypes }) => state.gameState);
 
+    // 格子节点
     const gameList = Object.keys(GAME_CONFIG);
     const squareEl = gameList.map((_item, index) => {
         if (gameType === gameList[index]) {

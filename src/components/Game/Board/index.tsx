@@ -24,6 +24,7 @@ const  Board = ({ nextChessIndex, squares, currentMove, onPlay }: BoardType) => 
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
     const { gameOver, finishCount, activeUser, chess, boardSize } = gameState;
     const nextChess = chess[nextChessIndex];
+
     /**
      * 棋盘格子点击事件
      * @param row 棋子行索引
