@@ -1,11 +1,9 @@
-import { goMoKu_CONFIG } from '@/utils/gameConfig';
+import GAME_CONFIG from '@/components/Game/gameConfig';
 export interface stateTypes {
     name: string;
     boardSize: number;
     activeUser: string;
     chess: string[];
-    mode: string;
-    first: string;
     winner: string;
     gameType: string;
     gameOver: boolean;
@@ -13,6 +11,6 @@ export interface stateTypes {
     time: number;
 }
 
-const initialState: stateTypes = goMoKu_CONFIG;
+const initialState: stateTypes = GAME_CONFIG.goMoKu;
 
 export default initialState;

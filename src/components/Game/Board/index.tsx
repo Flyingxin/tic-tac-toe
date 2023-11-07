@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import calculateWinner from '@/utils/judge';
-import { stateTypes } from '@/store/gameStatus/index';
-import { end_game, play_game } from '@/store/gameStatus/reducer';  // action
+import { stateTypes } from '@/components/Game/gameConfig';
+import { endGame, playGame } from '@/store/gameStatus/reducer';  // action
+import calcWinner from '@/utils/judge';
 import Square from './Square';
 import './index.css';
 interface BoardType {
@@ -19,85 +19,64 @@ interface BoardType {
  * @param onPlay 记录棋盘信息
  * @returns component
  */
-function Board ({ nextChessIndex, squares, currentMove, onPlay }: BoardType) {
+const  Board = ({ nextChessIndex, squares, currentMove, onPlay }: BoardType) => {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
     const { gameOver, finishCount, activeUser, chess, boardSize } = gameState;
     const nextChess = chess[nextChessIndex];
-
     /**
      * 棋盘格子点击事件
      * @param row 棋子行索引
      * @param colum 棋子列索引
      * @returns void
      */
-    function handleClick (row: number, colum: number) {
+    function handleClick (row: number, colum: number, squares:string[][]) {
         if (gameOver || squares[row][colum]) return;
-
         const coordinate: number[] = [row, colum];
         const nextSquares: string[][] = JSON.parse(JSON.stringify(squares));  // 深拷贝 slice是浅拷贝
-        
         nextSquares[row][colum] = activeUser;
         onPlay(nextSquares);
-        
         // console.log(nextChessIndex, activeUser, nextChess);
-        if (calculateWinner(coordinate, activeUser, finishCount, squares)) {
+        if (calcWinner(coordinate, activeUser, finishCount, squares)) {
             const obj = {
                 winner: activeUser,
                 gameOver: true,
             };
-            dispatch(end_game(obj));
-        }else if (currentMove === boardSize*boardSize -1) {
+            dispatch(endGame(obj));
+        } else if (currentMove === (boardSize * boardSize) - 1) {
             const obj = {
                 winner: '',
                 gameOver: true,
             };
-            console.log(obj);
-            
-            dispatch(end_game(obj));            
+            dispatch(endGame(obj));
         } else {
-            dispatch(play_game({ activeUser: nextChess }));
+            dispatch(playGame({ activeUser: nextChess }));
         }
     }
-    /**
-     * 渲染棋盘
-     * @returns string[][]
-     */
-    function renderBoard () {
-        const boardSize = squares.length;
-        const squareList: string[][] = [];
-        // console.log(squares);
 
-        for (let row = 0; row < boardSize; row++) {
-            squareList.push([]);
-            for (let colum = 0; colum < boardSize; colum++) {
-                const square: any = (
-                    <span
-                        key={`${row * boardSize * 2}${colum * boardSize * 2}`}>
-                        <Square
-                            key={`${row}${colum}`}
-                            value={squares[row][colum]}
-                            onSquareClick={() => handleClick(row, colum)} />
-                        {/* 判断是否换行 */}
-                        {boardSize - 1 === colum ? <br key={`${row * boardSize}${colum * boardSize}`}></br> : ''}
-                    </span>
-                );
-                squareList.push(square);
-            }
-        }
-        return squareList;
-    }
+    // 渲染棋盘
+    const boardEl = squares.map((item, rowIndex) => {
+        return item.map((_item, columIndex) => {
+            return (
+                <span
+                    key={`${(rowIndex + 1) * boardSize * 2}${(columIndex + 1) * boardSize * 2}`}>
+                    <Square
+                        key={`${rowIndex}${columIndex}`}
+                        value={squares[rowIndex][columIndex] }
+                        onSquareClick={() => handleClick(rowIndex, columIndex, squares)} />
+                    {/* 判断是否换行 */}
+                    {boardSize - 1 === columIndex ? <br ></br> : ''}
+                </span>
+            );
+        });
+    });
 
     return (
-        <>
-            <div className='container'>
-                <div className="game">
-                    {renderBoard()}
-                </div>
+        <div className='container'>
+            <div className="game">
+                {boardEl}
             </div>
-
-        </>
+        </div>
     );
-}
-
-export default React.memo(Board);
+};
+export default Board;

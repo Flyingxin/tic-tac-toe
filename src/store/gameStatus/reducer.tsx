@@ -1,40 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from './index';
-import { ticTacToe_CONFIG, goMoKu_CONFIG } from '@/utils/gameConfig';
+import GAME_CONFIG from '@/components/Game/gameConfig';
 export const gameStatus = createSlice({
     name: 'gameStatus',
     initialState,
     reducers: {
-        start_game: (state, action) => {
+        startGame: (state, action) => {
             const { gameOver, winner, activeUser } = action.payload;
-            state.activeUser = activeUser;
-            state.gameOver = gameOver;
-            state.winner = winner;
+            state = { ...state, activeUser, gameOver, winner };
             // console.log(action.payload);
 
             return state;
         },
-        change_game: (state, action) => {
-            if (action.payload === goMoKu_CONFIG.gameType) {
-                state = goMoKu_CONFIG;
-            } else if (action.payload === ticTacToe_CONFIG.gameType) {
-                state = ticTacToe_CONFIG;
-            } else {
-                console.warn('游戏类型错误');
-            }
-
+        initGame: (state, action) => {
+            const { gameType } = action.payload;
+            state = GAME_CONFIG[gameType];
             return state;
         },
-        play_game: (state, action) => {
+        playGame: (state, action) => {
             const { activeUser } = action.payload;
-            state.activeUser = activeUser;
+            state = { ...state, activeUser };
             return state;
         },
-        end_game: (state, action) => {
+        endGame: (state, action) => {
             const { gameOver, winner } = action.payload;
-            state.gameOver = gameOver;
-            state.winner = winner;
-            // console.log(action.payload);
+            state = { ...state, gameOver, winner };
 
             return state;
         },
@@ -43,10 +33,10 @@ export const gameStatus = createSlice({
 
 // 为每个 case reducer 函数生成 Action creators
 export const {
-    start_game,
-    change_game,
-    play_game,
-    end_game,
+    startGame,
+    initGame,
+    playGame,
+    endGame,
 } = gameStatus.actions;
 
 export default gameStatus.reducer;

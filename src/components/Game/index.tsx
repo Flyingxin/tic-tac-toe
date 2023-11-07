@@ -1,32 +1,38 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { stateTypes } from '@/store/gameStatus/index';
-import { start_game } from '@/store/gameStatus/reducer';
-import { ticTacToe_CONFIG } from '@/utils/gameConfig';
+import { stateTypes } from '@/components/Game/gameConfig';
+import { startGame } from '@/store/gameStatus/reducer';
 import Board from './Board';
 import Notification from '../Notification';
 import './index.css';
+interface gameTypes {
+    isToggleGame: boolean;
+}
 /**
  * 游戏组件，用于管理五子棋与井字棋组件
  * @returns component
  */
-function Game () {
+export default function Game ({ isToggleGame }: gameTypes) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
-    const { boardSize, gameType, chess } = gameState;
+    const { boardSize, chess, gameType } = gameState;
 
-    const [gameTypes, setGameType] = useState(gameType);
+    // const [gameMode, setGameMode] = useState(gameType);
     const [history, setHistory] = useState([initBoard(boardSize)]);
     const [currentMove, setCurrentMove] = useState(0);
     const [stepBtnActive, setStepBtnActive] = useState(0);
     const nextChessIndex = currentMove % 2;
     const currentSquares = history[currentMove];
-    // 切换游戏时
-    if (gameTypes !== gameType) {
-        setGameType(gameType);
-        setHistory([initBoard(boardSize)]);
-        setCurrentMove(0);
-    }
+
+    useEffect(() => {
+        // 切换游戏
+        if (isToggleGame) {
+            // setGameMode(gameType);
+            setHistory([initBoard(boardSize)]);
+            setCurrentMove(0);
+            setStepBtnActive(0);
+        }
+    }, [gameType]);
 
     /**
      * 初始化棋盘值
@@ -35,9 +41,10 @@ function Game () {
      */
     function initBoard (boardSize: number) {
         const listArray: string[][] = [];
-        for (let index = 0; index < boardSize; index++) {
-            listArray.push(Array(boardSize).fill(null));
-        }
+        const rowArr =  Array(boardSize).fill(null);
+        rowArr.forEach(() => {
+            listArray.push(rowArr);
+        });
         return listArray;
     }
 
@@ -52,37 +59,33 @@ function Game () {
         setHistory(nextHistory);
     }
 
+
     /**
      * 渲染回退按钮
      */
-    function renderMoves () {
-        const moves = history.map((_item: string[][], step: number) => {
-            let description: string;
-            if (step > 0) {
-                description = gameTypes === ticTacToe_CONFIG.gameType ?
-                    `${step}执棋   ${step % 2 === 0 ? ticTacToe_CONFIG.chess[0] : ticTacToe_CONFIG.chess[1]}` :
-                    `${step}执棋   ${step % 2 === 0 ? '白方' : '黑方'}`;
-            } else {
-                description = '游戏开始';
-            }
-            const className = stepBtnActive === step ? 'game-step-button--active' : 'game-step-button';
-            return (
-                <li key={step}>
-                    <button className={className} onClick={() => jumpTo(step)}>{description}</button>
-                </li>
-            );
-        });
-        return moves;
-    }
+    const historyEl = history.map((_item: string[][], step: number) => {
+        let description: string;
+        step > 0 ?
+            description = `${step}执棋   ${step % 2 === 0 ? chess[1] : chess[0]}` :
+            description = '游戏开始';
+
+        const className = stepBtnActive === step ? 'game-step-button--active' : 'game-step-button';
+        return (
+            <li key={step}>
+                <button className={className} onClick={() => jumpTo(step)}>{description}</button>
+            </li>
+        );
+    });
     /**
      * 悔棋
      * @param lastMove
      * return void
      */
     function jumpTo (step: number) {
+        if (step === history.length - 1) return;
         setCurrentMove(step);
         setStepBtnActive(step);
-        dispatch(start_game({
+        dispatch(startGame({
             activeUser: step % 2 === 0 ? chess[1] : chess[0],
             winner: '',
             gameOver: false,
@@ -99,9 +102,8 @@ function Game () {
                 <Notification></Notification>
             </div>
             <div className="game-info">
-                <ol>{renderMoves()}</ol>
+                <ol>{historyEl}</ol>
             </div>
         </div>
     );
 }
-export default React.memo(Game);

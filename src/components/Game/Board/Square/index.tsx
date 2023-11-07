@@ -1,11 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { stateTypes } from '@/store/gameStatus/index';
-import { ticTacToe_CONFIG } from '@/utils/gameConfig';
+import GAME_CONFIG, { stateTypes } from '@/components/Game/gameConfig';
 import './index.css';
 interface SquareType {
     value: string;
-    onSquareClick?: () => void;
+    onSquareClick: () => void;
 }
 /**
  * 棋盘格子组件，用于展示格子信息
@@ -13,14 +12,21 @@ interface SquareType {
  * @param onSquareClick  格子点击事件
  * @returns
  */
-function Square ({ value, onSquareClick }: SquareType) {
-    const { gameType } = useSelector((state: { gameState: stateTypes }) => state.gameState);
-    return (
-        <button className='square' onClick={onSquareClick}>
-            {gameType === ticTacToe_CONFIG.gameType ?
-                value :
-                <span className={value}></span>}
-        </button>
-    );
-}
-export default React.memo(Square);
+const Square = ({ value, onSquareClick }: SquareType) => {
+    const { gameType, activeUserClass } = useSelector((state: { gameState: stateTypes }) => state.gameState);
+
+    const gameList = Object.keys(GAME_CONFIG);
+    const squareEl = gameList.map((_item, index) => {
+        if (gameType === gameList[index]) {
+            return (
+                <button
+                    key={index}
+                    className='square' onClick={onSquareClick}>
+                    {<span className={activeUserClass[1] ? value : ''}>{!activeUserClass[1] ? value : ''}</span>}
+                </button>
+            );
+        }
+    });
+    return squareEl;
+};
+export default Square;

@@ -1,36 +1,36 @@
 .toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 70px;
-  background-color: #4b71e3;
-  color: white;
-  margin-bottom: 30px;
-  padding: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    background-color: #4b71e3;
+    color: white;
+    margin-bottom: 30px;
+    padding: 8px;
 }
 
 .tools {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .danger {
-  color: red;
-  font-size: 25px;
+    color: red;
+    font-size: 25px;
 }
 .common {
-  color: #fff;
-  font-size: 25px;
+    color: #fff;
+    font-size: 25px;
 }
 .gameType {
-  outline: none;
-  width: 150px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-  height: 60px;
-  border-radius: 6%;
-  color: #504f4f ;
+    outline: none;
+    width: 150px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    height: 60px;
+    border-radius: 6%;
+    color: #504f4f ;
 }
