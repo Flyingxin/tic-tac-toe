@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import {  initGame, endGame } from '@/store/gameStatus/reducer';  // action
 import GAME_CONFIG, { stateTypes } from '@/components/Game/gameConfig';
 import './index.css';
 
-interface headerType {
-    toggleGame: Function;
-}
 /**
  * 顶部组件，用于切换游戏，游戏倒计时
  * @returns component
  */
-export default function Header ({ toggleGame }:headerType) {
+export default function Header () {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
     const { activeUser, chess, gameOver, gameType, time } = gameState;
@@ -27,7 +24,6 @@ export default function Header ({ toggleGame }:headerType) {
         // console.log(selectValue);
         dispatch(initGame({ gameType: selectValue }));
         setCountdown(time);
-        toggleGame(true);
         event.preventDefault();
     }
 

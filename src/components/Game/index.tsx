@@ -5,14 +5,11 @@ import { startGame } from '@/store/gameStatus/reducer';
 import Board from './Board';
 import Notification from '../Notification';
 import './index.css';
-interface gameTypes {
-    isToggleGame: boolean;
-}
 /**
  * 游戏组件，用于管理五子棋与井字棋组件
  * @returns component
  */
-export default function Game ({ isToggleGame }: gameTypes) {
+export default function Game () {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
     const { boardSize, chess, gameType } = gameState;
@@ -25,13 +22,9 @@ export default function Game ({ isToggleGame }: gameTypes) {
     const currentSquares = history[currentMove];
 
     useEffect(() => {
-        // 切换游戏
-        if (isToggleGame) {
-            // setGameMode(gameType);
-            setHistory([initBoard(boardSize)]);
-            setCurrentMove(0);
-            setStepBtnActive(0);
-        }
+        setHistory([initBoard(boardSize)]);
+        setCurrentMove(0);
+        setStepBtnActive(0);
     }, [gameType]);
 
     /**

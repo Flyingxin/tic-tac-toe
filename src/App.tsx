@@ -13,14 +13,12 @@ import './App.css';
  * @returns
  */
 export default function App () {
-    let isToggleGame:boolean = true;
-
     return (
         <>
-            <Header toggleGame={(isToggle:boolean) => isToggleGame = isToggle}></Header>
+            <Header></Header>
             <div className='main'>
                 <StatusBar></StatusBar>
-                <Game isToggleGame={isToggleGame}></Game>
+                <Game></Game>
             </div>
         </>
     );

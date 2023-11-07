@@ -1,4 +1,3 @@
-import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { stateTypes } from '@/components/Game/gameConfig';
 import { endGame, playGame } from '@/store/gameStatus/reducer';  // action
