@@ -65,7 +65,7 @@ export default function Game ({ isToggleGame }: gameTypes) {
     const historyEl = history.map((_item: string[][], step: number) => {
         let description: string;
         step > 0 ?
-            description = `${step}执棋   ${step % 2 === 0 ? chess[1] : chess[0]}` :
+            description = `${step}执棋  ${chess[step % 2]}` :
             description = '游戏开始';
 
         const className = stepBtnActive === step ? 'game-step-button--active' : 'game-step-button';

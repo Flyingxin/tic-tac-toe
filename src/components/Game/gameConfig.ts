@@ -19,27 +19,29 @@ const GAME_CONFIG: configTypes = {
     goMoKu: {
         name: '五字棋',
         boardSize: 14,
-        activeUser: 'black',
+        finishCount: 5,
+        time: 30,
         activeUserClass: ['black', true],
+
+        activeUser: 'black',
         chess: ['white', 'black'],
         winner: '',
         gameType: 'goMoKu',
         gameOver: false,
-        finishCount: 5,
-        time: 30,
     },
     // 井字棋
     ticTacToe: {
         name: '井字棋',
         boardSize: 3,
-        activeUser: 'X',
+        finishCount: 3,
+        time: 20,
         activeUserClass: ['black', false],
+
+        activeUser: 'X',
         chess: ['O', 'X'],
         winner: '',
         gameType: 'ticTacToe',
         gameOver: false,
-        finishCount: 3,
-        time: 20,
     },
 };
 export default GAME_CONFIG;
