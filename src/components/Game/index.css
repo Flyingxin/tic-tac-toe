@@ -1,5 +1,7 @@
 .game-status {
     display: flex;
+    margin-top: 50px;
+    margin-left: 20px;
 }
 
 .game-board {

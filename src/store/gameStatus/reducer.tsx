@@ -1,14 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import initialState from './index';
 import GAME_CONFIG from '@/components/Game/gameConfig';
 export const gameStatus = createSlice({
     name: 'gameStatus',
-    initialState,
+    initialState: GAME_CONFIG.goMoKu,
     reducers: {
         startGame: (state, action) => {
-            const { gameOver, winner, activeUser } = action.payload;
-            state = { ...state, activeUser, gameOver, winner };
-            // console.log(action.payload);
+            const { gameOver, winner, activeUser, currentMove } = action.payload;
+            state = { ...state, activeUser, gameOver, winner, currentMove };
 
             return state;
         },

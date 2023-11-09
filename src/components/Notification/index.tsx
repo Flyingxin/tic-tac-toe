@@ -1,18 +1,16 @@
 import { useSelector } from 'react-redux';
-import { stateTypes } from '@/components/Game/gameConfig';
+import { StateTypes } from '@/components/Game/gameConfig';
 import './index.css';
 /**
  * 通知栏组件，用于展示游戏是否结束
  * @returns component
  */
 const Notification = () => {
-    const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
+    const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
     const { gameOver, winner } = gameState;
 
     const winnerEl = (<h3>胜利方为：{winner}</h3>);
     const peaceEl = (<h3>和棋</h3>);
-
-
     return (
         !gameOver ?
             (<div style={{ display: 'none' }}></div>) :

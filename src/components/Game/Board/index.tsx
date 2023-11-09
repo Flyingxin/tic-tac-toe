@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { stateTypes } from '@/components/Game/gameConfig';
-import { endGame, playGame } from '@/store/gameStatus/reducer';  // action
+import { StateTypes } from '@/components/Game/gameConfig';
+import { endGame, playGame } from '@/store/gameStatus';  // action
 import calcWinner from '@/utils/judge';
 import Square from './Square';
 import './index.css';
@@ -20,8 +20,8 @@ interface BoardType {
  */
 const  Board = ({ nextChessIndex, squares, currentMove, onPlay }: BoardType) => {
     const dispatch = useDispatch();
-    const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
-    const { gameOver, finishCount, activeUser, chess, boardSize } = gameState;
+    const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
+    const { gameOver, finishCount, activeUser, chess, boardSize, gameType } = gameState;
     const nextChess = chess[nextChessIndex];
 
     /**
@@ -30,45 +30,57 @@ const  Board = ({ nextChessIndex, squares, currentMove, onPlay }: BoardType) => 
      * @param colum 棋子列索引
      * @returns void
      */
-    function handleClick (row: number, colum: number, squares:string[][]) {
+    function handleClick (row: number, colum: number) {
         if (gameOver || squares[row][colum]) return;
         const coordinate: number[] = [row, colum];
         const nextSquares: string[][] = JSON.parse(JSON.stringify(squares));  // 深拷贝 slice是浅拷贝
         nextSquares[row][colum] = activeUser;
-        onPlay(nextSquares);
-        // console.log(nextChessIndex, activeUser, nextChess);
-        if (calcWinner(coordinate, activeUser, finishCount, squares)) {
+        onPlay(nextSquares, coordinate);
+
+        if (calcWinner(coordinate, activeUser, finishCount, nextSquares)) { // 胜利
             const obj = {
                 winner: activeUser,
                 gameOver: true,
             };
             dispatch(endGame(obj));
-        } else if (currentMove === (boardSize * boardSize) - 1) {
+        } else if (currentMove === (boardSize * boardSize) - 1) { // 和棋
             const obj = {
                 winner: '',
                 gameOver: true,
             };
             dispatch(endGame(obj));
-        } else {
-            dispatch(playGame({ activeUser: nextChess }));
+        } else { // 游戏继续
+            dispatch(playGame({
+                activeUser: nextChess,
+                currentMove,
+            }));
         }
     }
-
     // 渲染棋盘
     const boardEl = squares.map((item, rowIndex) => {
-        return item.map((_item, columIndex) => {
+        const rowEl = item.map((_item, columIndex) => {
             return (
                 <span
-                    key={`${(rowIndex + 1) * boardSize * 2}${(columIndex + 1) * boardSize * 2}`}>
-                    <Square
-                        key={`${rowIndex}${columIndex}`}
-                        value={squares[rowIndex][columIndex] }
-                        onSquareClick={() => handleClick(rowIndex, columIndex, squares)} />
-                    {/* 判断是否换行 */}
+                    key={`${rowIndex}-${columIndex}`}>
+                    <span
+                        className='square'
+                        onClick={() => handleClick(rowIndex, columIndex)}
+                        key={`${rowIndex}${columIndex}`}>
+                        {
+                            squares[rowIndex][columIndex] ?
+                                <Square
+                                    key={`${rowIndex}${columIndex}`}
+                                    gameType={gameType}
+                                    value={squares[rowIndex][columIndex] }/> :
+                                ''
+                        }
+                        {/* 判断是否换行 */}
+                    </span>
                     {boardSize - 1 === columIndex ? <br ></br> : ''}
                 </span>
             );
         });
+        return rowEl;
     });
 
     return (

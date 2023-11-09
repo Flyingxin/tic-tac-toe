@@ -5,14 +5,14 @@
     height: 70px;
     background-color: #4b71e3;
     color: white;
-    margin-bottom: 30px;
     padding: 8px;
 }
 
 .tools {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
+    width: 150px;
 }
 
 .danger {

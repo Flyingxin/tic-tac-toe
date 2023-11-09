@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {  initGame, endGame } from '@/store/gameStatus/reducer';  // action
-import GAME_CONFIG, { stateTypes } from '@/components/Game/gameConfig';
+import {  initGame, endGame } from '@/store/gameStatus';  // action
+import GAME_CONFIG, { StateTypes } from '@/components/Game/gameConfig';
 import './index.css';
 
 /**
@@ -10,10 +10,9 @@ import './index.css';
  */
 export default function Header () {
     const dispatch = useDispatch();
-    const gameState = useSelector((state: { gameState: stateTypes }) => state.gameState);
-    const { activeUser, chess, gameOver, gameType, time } = gameState;
+    const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
+    const { activeUser, chess, currentMove, gameOver, gameType, time } = gameState;
     const [countdown, setCountdown] = useState(GAME_CONFIG[gameType].time);
-    const [currentChess, setCurrentChess] = useState(activeUser);
 
     /**
      * 切换游戏
@@ -59,12 +58,9 @@ export default function Header () {
         setCountdown(GAME_CONFIG[gameType].time);
     }, [countdown]);
 
-    // 切换用户时重新计时
-    if (currentChess !== activeUser) {
-        setCurrentChess(activeUser);
+    useEffect(() => {
         setCountdown(time);
-    }
-
+    }, [activeUser, currentMove]);
     // 倒计时
     let countdownEl: JSX.Element;
     gameOver ?

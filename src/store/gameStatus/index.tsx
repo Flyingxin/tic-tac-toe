@@ -1,16 +1,39 @@
+import { createSlice } from '@reduxjs/toolkit';
 import GAME_CONFIG from '@/components/Game/gameConfig';
-export interface stateTypes {
-    name: string;
-    boardSize: number;
-    activeUser: string;
-    chess: string[];
-    winner: string;
-    gameType: string;
-    gameOver: boolean;
-    finishCount: number;
-    time: number;
-}
+export const gameStatus = createSlice({
+    name: 'gameStatus',
+    initialState: GAME_CONFIG.goMoKu,
+    reducers: {
+        initGame: (state, action) => {
+            const { gameType } = action.payload;
+            state = GAME_CONFIG[gameType];
 
-const initialState: stateTypes = GAME_CONFIG.goMoKu;
+            return state;
+        },
+        startGame: (state, action) => {
+            const { gameOver, currentMove, winner, activeUser } = action.payload;
+            state = { ...state, activeUser, currentMove, gameOver, winner };
+            return state;
+        },
+        playGame: (state, action) => {
+            const { activeUser, currentMove } = action.payload;
+            state = { ...state, activeUser, currentMove };
+            return state;
+        },
+        endGame: (state, action) => {
+            const { gameOver, winner } = action.payload;
+            state = { ...state, gameOver, winner };
+            return state;
+        },
+    },
+});
 
-export default initialState;
+// 为每个 case reducer 函数生成 Action creators
+export const {
+    startGame,
+    initGame,
+    playGame,
+    endGame,
+} = gameStatus.actions;
+
+export default gameStatus.reducer;
