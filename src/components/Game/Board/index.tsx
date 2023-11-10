@@ -1,86 +1,77 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useCallback, useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { StateTypes } from '@/components/Game/gameConfig';
-import { endGame, playGame } from '@/store/gameStatus';  // action
-import calcWinner from '@/utils/judge';
 import Square from './Square';
 import './index.css';
 interface BoardType {
-    nextChessIndex: number;
-    squares: string[][];
+    gameOver:boolean;
     currentMove:number;
-    onPlay: Function;
+    board: string[][];
+    recordStep: Function;
+    calcGameStatus:Function;
 }
 /**
  * 棋盘组件，用于展示棋盘基础功能
- * @param nextChessIndex 下一个棋子索引
- * @param squares 棋盘信息
- * @param currentMove 棋步数
- * @param onPlay 记录棋盘信息
+ * @param gameOver 游戏状态
+ * @param currentMove 当前棋子步骤数
+ * @param board 最新棋盘
+ * @param recordStep 记录棋盘步骤
+ * @param calcGameStatus 计算游戏状态
  * @returns component
  */
-const  Board = ({ nextChessIndex, squares, currentMove, onPlay }: BoardType) => {
-    const dispatch = useDispatch();
+const Board = ({ gameOver, currentMove, board, recordStep, calcGameStatus }: BoardType) => {
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { gameOver, finishCount, activeUser, chess, boardSize, gameType } = gameState;
-    const nextChess = chess[nextChessIndex];
+    const { activeUser, boardSize, gameType } = gameState;
+    const [coordinate, setCoordinate] = useState([0, 0]);
+    const [isGameStart, setIsGameStart] = useState(false);
+
+    // 新增棋子监听
+    useEffect(() => {
+        if (isGameStart) {
+            const [row, colum] = coordinate;
+            if (gameOver || board[row][colum]) return;
+            const nextBoard = JSON.parse(JSON.stringify(board));  // 深拷贝 slice是浅拷贝
+            nextBoard[row][colum] = activeUser;
+            // 记录历史记录
+            recordStep(nextBoard, coordinate);
+            // 计算游戏状态
+            calcGameStatus(coordinate, currentMove, false);
+        } else {
+            setIsGameStart(true);
+        }
+    }, [coordinate]);
 
     /**
-     * 棋盘格子点击事件
-     * @param row 棋子行索引
-     * @param colum 棋子列索引
-     * @returns void
+     * 下棋
+     * @param row 行
+     * @param colum 列
+     * @returns
      */
-    function handleClick (row: number, colum: number) {
-        if (gameOver || squares[row][colum]) return;
-        const coordinate: number[] = [row, colum];
-        const nextSquares: string[][] = JSON.parse(JSON.stringify(squares));  // 深拷贝 slice是浅拷贝
-        nextSquares[row][colum] = activeUser;
-        onPlay(nextSquares, coordinate);
+    const handleClick = useCallback((row: number, colum: number) => {
+        setCoordinate([row, colum]);
+    }, []);
 
-        if (calcWinner(coordinate, activeUser, finishCount, nextSquares)) { // 胜利
-            const obj = {
-                winner: activeUser,
-                gameOver: true,
-            };
-            dispatch(endGame(obj));
-        } else if (currentMove === (boardSize * boardSize) - 1) { // 和棋
-            const obj = {
-                winner: '',
-                gameOver: true,
-            };
-            dispatch(endGame(obj));
-        } else { // 游戏继续
-            dispatch(playGame({
-                activeUser: nextChess,
-                currentMove,
-            }));
-        }
-    }
     // 渲染棋盘
-    const boardEl = squares.map((item, rowIndex) => {
-        const rowEl = item.map((_item, columIndex) => {
+    const boardEl = board.map((item, rowIndex) => {
+        return item.map((_item, columIndex) => {
             return (
                 <span
-                    key={`${rowIndex}-${columIndex}`}>
-                    <span
-                        className='square'
-                        onClick={() => handleClick(rowIndex, columIndex)}
-                        key={`${rowIndex}${columIndex}`}>
-                        {
-                            squares[rowIndex][columIndex] ?
-                                <Square
-                                    key={`${rowIndex}${columIndex}`}
-                                    gameType={gameType}
-                                    value={squares[rowIndex][columIndex] }/> :
-                                ''
-                        }
-                        {/* 判断是否换行 */}
-                    </span>
+                    key={`${rowIndex}${columIndex}`}>
+                    {
+                        <Square
+                            key={`${rowIndex}${columIndex}`}
+                            gameType={gameType}
+                            row={rowIndex}
+                            colum={columIndex}
+                            value={board[rowIndex][columIndex]}
+                            handleClick={handleClick}
+                        />
+                    }
+                    {/* 判断是否换行 */}
                     {boardSize - 1 === columIndex ? <br ></br> : ''}
                 </span>
             );
         });
-        return rowEl;
     });
 
     return (

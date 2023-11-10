@@ -7,22 +7,11 @@ export const gameStatus = createSlice({
         initGame: (state, action) => {
             const { gameType } = action.payload;
             state = GAME_CONFIG[gameType];
-
-            return state;
-        },
-        startGame: (state, action) => {
-            const { gameOver, currentMove, winner, activeUser } = action.payload;
-            state = { ...state, activeUser, currentMove, gameOver, winner };
             return state;
         },
         playGame: (state, action) => {
-            const { activeUser, currentMove } = action.payload;
-            state = { ...state, activeUser, currentMove };
-            return state;
-        },
-        endGame: (state, action) => {
-            const { gameOver, winner } = action.payload;
-            state = { ...state, gameOver, winner };
+            const { activeUser } = action.payload;
+            state = { ...state, activeUser };
             return state;
         },
     },
@@ -30,10 +19,8 @@ export const gameStatus = createSlice({
 
 // 为每个 case reducer 函数生成 Action creators
 export const {
-    startGame,
     initGame,
     playGame,
-    endGame,
 } = gameStatus.actions;
 
 export default gameStatus.reducer;

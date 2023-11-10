@@ -3,10 +3,7 @@ export interface StateTypes {
     boardSize: number;
     activeUser: string;
     chess: string[];
-    winner: string;
     gameType: string;
-    gameOver: boolean;
-    currentMove:number;
     finishCount: number;
     time: number;
 }
@@ -21,12 +18,9 @@ const GAME_CONFIG: ConfigTypes = {
         boardSize: 14,
         finishCount: 5,
         time: 5,
-        currentMove: 0,
         activeUser: 'black',
         chess: ['white', 'black'],
-        winner: '',
         gameType: 'goMoKu',
-        gameOver: false,
     },
     // 井字棋
     ticTacToe: {
@@ -34,12 +28,9 @@ const GAME_CONFIG: ConfigTypes = {
         boardSize: 3,
         finishCount: 3,
         time: 99,
-        currentMove: 0,
         activeUser: 'X',
         chess: ['O', 'X'],
-        winner: '',
         gameType: 'ticTacToe',
-        gameOver: false,
     },
 };
 export default GAME_CONFIG;

@@ -1,34 +1,65 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {  initGame, endGame } from '@/store/gameStatus';  // action
+import { initGame } from '@/store/gameStatus';
 import GAME_CONFIG, { StateTypes } from '@/components/Game/gameConfig';
 import './index.css';
-
+interface HeaderType {
+    gameOver: boolean;
+    countdown:number;
+    setGameOver: Function;
+    setWinner: Function;
+    setCountDown: Function;
+}
 /**
  * 顶部组件，用于切换游戏，游戏倒计时
+ * @param gameOver 游戏状态
+ * @param countdown 倒计时;
+ * @param setGameOver: 修改游戏状态;
+ * @param setWinner: 修改胜利者;
+ * @param setCountDown: 修改倒计时;
  * @returns component
  */
-export default function Header () {
+function Header ({ gameOver, countdown, setGameOver, setWinner,  setCountDown }:HeaderType) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { activeUser, chess, currentMove, gameOver, gameType, time } = gameState;
-    const [countdown, setCountdown] = useState(GAME_CONFIG[gameType].time);
+    const { activeUser, chess, gameType } = gameState;
+
+    const options = Object.keys(GAME_CONFIG);
+
+    // 倒计时,每次挂载和数据更新前都会执行一遍
+    useEffect(() => {
+        if (gameOver) return;
+        if (countdown >= 1) {
+            const timer = setTimeout(() => {
+                setCountDown(countdown - 1);
+            }, 1000);
+            return () => clearTimeout(timer); // 清除定时器
+        }
+
+        const winner = activeUser === chess[0] ? chess[1] : chess[0];
+        setGameOver(true);
+        setWinner(winner);
+    }, [countdown, gameOver]);
+
+    // useEffect(() => {
+    //     setCountDown(GAME_CONFIG[gameType].time);
+    // }, [gameType]);
 
     /**
      * 切换游戏
      * @param event
-     * reture void
+     * return void
      */
     function changeGame (event:any) {
         const selectValue = event.target.value;
         // console.log(selectValue);
         dispatch(initGame({ gameType: selectValue }));
-        setCountdown(time);
+        setGameOver(false);
+        setCountDown(GAME_CONFIG[gameType].time);
         event.preventDefault();
     }
 
     // option下拉选项
-    const options = Object.keys(GAME_CONFIG);
     const optionEl = options.map((item, index) => {
         return (
             <option
@@ -38,33 +69,10 @@ export default function Header () {
             </option>);
     });
 
-
-    // 倒计时,每次挂载和数据更新前都会执行一遍
-    useEffect(() => {
-        if (gameOver) return;
-        if (countdown > 0) {
-            const timer = setTimeout(() => {
-                setCountdown(countdown - 1);
-            }, 1000);
-            return () => clearTimeout(timer); // 清除定时器
-        }
-        const winner = activeUser === chess[0] ? chess[1] : chess[0];
-        const obj = {
-            winner,
-            gameOver: true,
-        };
-
-        dispatch(endGame(obj));
-        setCountdown(GAME_CONFIG[gameType].time);
-    }, [countdown]);
-
-    useEffect(() => {
-        setCountdown(time);
-    }, [activeUser, currentMove]);
     // 倒计时
     let countdownEl: JSX.Element;
     gameOver ?
-        countdownEl = (<div className='common'>结束</div>)    :
+        countdownEl = (<div className='common'>结束</div>) :
         countdownEl =
             (
                 <div className='common'>
@@ -87,4 +95,4 @@ export default function Header () {
         </div>
     );
 }
-
+export default Header;

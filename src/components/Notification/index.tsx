@@ -1,13 +1,18 @@
-import { useSelector } from 'react-redux';
-import { StateTypes } from '@/components/Game/gameConfig';
+import { memo } from 'react';
 import './index.css';
+
+interface NotificationType {
+    gameOver: boolean;
+    winner:string;
+}
 /**
  * 通知栏组件，用于展示游戏是否结束
+ * @param gameOver 游戏状态
+ * @param winner 胜利者
  * @returns component
  */
-const Notification = () => {
-    const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { gameOver, winner } = gameState;
+function Notification ({ gameOver, winner }:NotificationType)  {
+    console.warn('Notification loading----');
 
     const winnerEl = (<h3>胜利方为：{winner}</h3>);
     const peaceEl = (<h3>和棋</h3>);
@@ -22,5 +27,5 @@ const Notification = () => {
                 </div>
             </div>)
     );
-};
-export default  Notification;
+}
+export default memo(Notification);

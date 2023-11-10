@@ -9,6 +9,7 @@
  */
 export default function calcWinner (coordinate: number[], piece: string, finishCount: number, list: string[][]) {
     const direction = ['horizontal', 'plusTilt', 'vertical', 'minusTilt'];
+
     for (const angle of direction) {
         let count = 1;
         count = checkLineChess(coordinate, coordinate, [angle, 'front'], piece, list, count);

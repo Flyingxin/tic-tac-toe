@@ -1,18 +1,27 @@
-import { useSelector } from 'react-redux';
-import GAME_CONFIG, { StateTypes } from '@/components/Game/gameConfig';
-// styles
+import { memo } from 'react';
+import GAME_CONFIG from '@/components/Game/gameConfig';
 import './index.css';
+interface StatusBarType {
+    gameType:string;
+    chess: string[];
+}
 /**
  * 状态栏组件，呈现玩家棋子组件
+ * @param gameType 游戏类型
+ * @param chess 棋子样式
  * @returns component
  */
-export default function StatusBar () {
-    const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { gameType, chess } = gameState;
+function StatusBar ({ gameType, chess } :StatusBarType) {
+    console.warn('StatusBar loading----');
+
+    const gameList = Object.keys(GAME_CONFIG);
+
     /**
-     *  棋子样式
+     * 棋子样式
+     * @param gameType 游戏类型
+     * @returns component
      */
-    function playerEl (gameType:string) {
+    const playerEl = (gameType:string) => {
         return gameType === 'goMoKu' ?
             <>
                 玩家1:
@@ -22,12 +31,12 @@ export default function StatusBar () {
             </> :
             <>
                 玩家1:
-                <div className={ 'black1'}> {chess[1]} </div>
+                <div className= 'black1'> {chess[1]} </div>
                 玩家2:
-                <div className={ 'black1'}>  {chess[0]} </div>
+                <div className= 'black1'> {chess[0]} </div>
             </>;
-    }
-    const gameList = Object.keys(GAME_CONFIG);
+    };
+
     return gameList.map((_item, index) => {
         if (gameType === gameList[index]) {
             return (
@@ -40,3 +49,4 @@ export default function StatusBar () {
         }
     });
 }
+export default memo(StatusBar);

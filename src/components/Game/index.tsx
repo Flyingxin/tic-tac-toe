@@ -1,116 +1,131 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StateTypes } from '@/components/Game/gameConfig';
-import { startGame  } from '@/store/gameStatus'; // endGame
-// import calcWinner from '@/utils/judge';
 import Board from './Board';
+import History from './History';
 import Notification from '../Notification';
+import calcWinner from '@/utils/judge';
+import { playGame } from '@/store/gameStatus';
 import './index.css';
 
+interface GameType {
+    gameOver: boolean;
+    winner: string;
+    setGameOver: Function;
+    setWinner:Function;
+    setCountDown:Function;
+}
+
 /**
- * 游戏组件，用于管理五子棋与井字棋组件
+ * 游戏组件，用于管理棋盘与历史记录组件
+ * @param gameOver 游戏状态
+ * @param winner 胜利者
+ * @param setGameOver: 修改游戏状态;
+ * @param setWinner: 修改胜利者;
+ * @param setCountDown: 修改倒计时;
  * @returns component
  */
-export default function Game () {
+function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameType) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { boardSize, chess, gameType } = gameState;
-    // const { boardSize, chess, gameType, activeUser, finishCount } = gameState;
+    const { boardSize, gameType, finishCount, chess, time } = gameState;
 
-    const [history, setHistory] = useState([initBoard(boardSize)]);
+    const [boardHistory, setBoardHistory] = useState([initBoard(boardSize)]);
     const [axisHistory, setAxisHistory] = useState([[0, 0]]);
     const [currentMove, setCurrentMove] = useState(0);
-    const nextChessIndex = currentMove % 2;
-    const currentSquares = history[currentMove];
+    const board = boardHistory[currentMove];
 
     // 切换游戏
     useEffect(() => {
-        setHistory([initBoard(boardSize)]);
+        setBoardHistory([initBoard(boardSize)]);
         setCurrentMove(0);
+        setAxisHistory([[0, 0]]);
     }, [gameType]);
 
     /**
-     * 初始化棋盘值
-     * @param boardSize
+     * 棋盘初始化
+     * @param boardSize 棋盘尺寸
      * @returns string[][]
      */
     function initBoard (boardSize: number) {
-        const rowArr =  Array(boardSize).fill(null);
-        const listArray = rowArr.map(() => {
-            return rowArr;
-        });
-        return listArray;
+        const rowArr = Array(boardSize).fill(null);
+        return rowArr.map(() =>  rowArr);
     }
 
     /**
      * 记录回退记录
-     * @param nextSquares
+     * @param nextBoard 最新棋盘
+     * @param coordinate 坐标
      * retrun void
      */
-    function handlePlay (nextSquares: string[][], coordinate:number[]) {
-        const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
-        const axisArry = [...axisHistory.slice(0, currentMove + 1), coordinate];
+    function recordStep (nextBoard: string[][], coordinate:number[]) {
+        const nextHistory = [...boardHistory.slice(0, currentMove + 1), nextBoard];
+        const axisArray = [...axisHistory.slice(0, currentMove + 1), coordinate];
+
         setCurrentMove(nextHistory.length - 1);
-        setHistory(nextHistory);
-        setAxisHistory(axisArry);
+        setBoardHistory(nextHistory);
+        setAxisHistory(axisArray);
     }
 
     /**
-     * 渲染回退按钮
+     * 计算游戏状态
+     * @param coordinate 坐标
+     * @param step 步骤
+     * @param isJumpTo 是否回退
+     * @returns
      */
-    const historyEl = history.map((_item: string[][], step: number) => {
-        const [row, colum] = axisHistory[step];
-        let description: string;
-        step > 0 ?
-            description = `${step}执棋  ${chess[step % 2]} (${row + 1},${colum + 1})` :
-            description = '游戏开始';
+    function calcGameStatus (coordinate:number[], step:number, isJumpTo:boolean) {
+        // 当前选手,下一个选手
+        let nextPlayer; let  currentPlayer;
 
-        const className = currentMove === step ? 'game-step-button--active' : 'game-step-button';
-        return (
-            <li key={step}>
-                <button className={className} onClick={() => jumpTo(step)}>{description}</button>
-            </li>
-        );
-    });
+        if (isJumpTo) {
+            nextPlayer = step % 2 === 0 ? chess[1] : chess[0];
+            currentPlayer = chess[step % 2];
+        } else {
+            nextPlayer = chess[step % 2];
+            currentPlayer = step % 2 === 0 ? chess[1] : chess[0];
+        }
 
-    /**
-     * 悔棋
-     * @param lastMove
-     * return void
-     */
-    function jumpTo (step: number) {
-        if (step !== 0 && step === currentMove) return;
-        if (step === history.length - 1) return;
-        setCurrentMove(step);
-        // if (calcWinner(axisHistory[step], activeUser, finishCount, history[step])) {
-        //     const obj = {
-        //         winner: activeUser,
-        //         gameOver: true,
-        //     };
-        //     dispatch(endGame(obj));
-        //     return;
-        // }
-        dispatch(startGame({
-            activeUser: step % 2 === 0 ? chess[1] : chess[0],
-            currentMove: step,
-            winner: '',
-            gameOver: false,
-        }));
+        // 游戏规则
+        if (calcWinner(coordinate, currentPlayer, finishCount, boardHistory[step])) { // 胜利
+            // console.log('win');
+            setWinner(currentPlayer);
+            setGameOver(true);
+            return;
+        } else if (step === (isJumpTo ? (boardSize * boardSize) : (boardSize * boardSize) - 1)) { // 和棋
+            // console.log('peace');
+            setGameOver(true);
+            setWinner('');
+        } else {  // 继续游戏
+            // console.log(`---${step}:当前${currentPlayer}——游戏继续——下一步${nextPlayer}---`);
+            setGameOver(false);
+            setCountDown(time);
+            dispatch(playGame({ activeUser: nextPlayer }));
+        }
     }
 
     return (
         <div className="game-status">
             <div className="game-board">
                 <Board
-                    nextChessIndex={nextChessIndex}
-                    squares={currentSquares}
-                    currentMove = {currentMove}
-                    onPlay={handlePlay} />
-                <Notification></Notification>
+                    board={board}
+                    recordStep={recordStep}
+                    calcGameStatus={calcGameStatus}
+                    currentMove={currentMove}
+                    gameOver={gameOver}/>
+                <Notification
+                    gameOver={gameOver}
+                    winner={winner}/>
             </div>
-            <div className="game-info">
-                <ol>{historyEl}</ol>
+            <div className="game-history">
+                <History
+                    currentMove={currentMove}
+                    setCurrentMove={setCurrentMove}
+                    axisHistory={axisHistory}
+                    boardHistory={boardHistory}
+                    calcGameStatus={calcGameStatus}/>
             </div>
         </div>
     );
 }
+export default memo(Game);
