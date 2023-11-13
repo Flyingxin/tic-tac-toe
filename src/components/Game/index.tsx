@@ -1,4 +1,4 @@
-import { useState, useEffect, memo } from 'react';
+import { memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StateTypes } from '@/components/Game/gameConfig';
 import Board from './Board';
@@ -9,11 +9,18 @@ import { playGame } from '@/store/gameStatus';
 import './index.css';
 
 interface GameType {
+    boardHistory:string[][][];
+    axisHistory:number[][];
+    currentMove:number;
     gameOver: boolean;
     winner: string;
     setGameOver: Function;
     setWinner:Function;
     setCountDown:Function;
+    setBoardHistory:Function;
+    setAxisHistory:Function;
+    setCurrentMove:Function;
+
 }
 
 /**
@@ -25,32 +32,16 @@ interface GameType {
  * @param setCountDown: 修改倒计时;
  * @returns component
  */
-function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameType) {
+function Game ({
+    boardHistory, axisHistory, currentMove, gameOver, winner, setGameOver,
+    setWinner,  setCountDown, setBoardHistory, setAxisHistory, setCurrentMove,
+}:GameType) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { boardSize, gameType, finishCount, chess, time } = gameState;
+    const { boardSize, finishCount, chess, time } = gameState;
 
-    const [boardHistory, setBoardHistory] = useState([initBoard(boardSize)]);
-    const [axisHistory, setAxisHistory] = useState([[0, 0]]);
-    const [currentMove, setCurrentMove] = useState(0);
     const board = boardHistory[currentMove];
 
-    // 切换游戏
-    useEffect(() => {
-        setBoardHistory([initBoard(boardSize)]);
-        setCurrentMove(0);
-        setAxisHistory([[0, 0]]);
-    }, [gameType, boardSize]);
-
-    /**
-     * 棋盘初始化
-     * @param boardSize 棋盘尺寸
-     * @returns string[][]
-     */
-    function initBoard (boardSize: number) {
-        const rowArr = Array(boardSize).fill(null);
-        return rowArr.map(() =>  rowArr);
-    }
 
     /**
      * 记录回退记录

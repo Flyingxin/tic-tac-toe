@@ -12,7 +12,7 @@ interface NotificationType {
  * @returns component
  */
 function Notification ({ gameOver, winner }:NotificationType)  {
-    // console.warn('Notification loading----');
+    console.warn('Notification loading----');
 
     const winnerEl = (<h3>胜利方为：{winner}</h3>);
     const peaceEl = (<h3>和棋</h3>);

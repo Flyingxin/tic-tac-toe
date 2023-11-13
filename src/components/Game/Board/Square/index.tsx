@@ -18,7 +18,7 @@ interface SquareType {
  * @returns
  */
 const Square = ({ gameType, row, colum, value, handleClick }: SquareType) => {
-    // console.warn('Square loading----');
+    console.warn('Square loading----');
 
     /**
      * 格子点击事件
