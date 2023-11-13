@@ -12,7 +12,7 @@ interface StatusBarType {
  * @returns component
  */
 function StatusBar ({ gameType, chess } :StatusBarType) {
-    console.warn('StatusBar loading----');
+    // console.warn('StatusBar loading----');
 
     const gameList = Object.keys(GAME_CONFIG);
 

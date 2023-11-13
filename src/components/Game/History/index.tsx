@@ -7,7 +7,6 @@ interface HistoryType {
     currentMove:number;
     axisHistory:number[][];
     boardHistory:string[][][];
-    setCurrentMove:Function;
     calcGameStatus: Function;
 }
 
@@ -16,11 +15,10 @@ interface HistoryType {
  * @param currentMove 当前步骤数
  * @param axisHistory 坐标历史记录;
  * @param boardHistory 棋盘历史记录;
- * @param setCurrentMove 修改步骤数;
  * @param calcGameStatus 计算游戏状态;
  * @returns component
  */
-function History ({ currentMove, axisHistory, boardHistory, setCurrentMove, calcGameStatus }:HistoryType): JSX.Element {
+function History ({ currentMove, axisHistory, boardHistory, calcGameStatus }:HistoryType): JSX.Element {
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
     const { chess } = gameState;
 
@@ -31,7 +29,6 @@ function History ({ currentMove, axisHistory, boardHistory, setCurrentMove, calc
      */
     function jumpToStep (step: number) {
         if (step !== 0 && step === currentMove) return;
-        setCurrentMove(step);
         // 计算游戏状态
         calcGameStatus(axisHistory[step], step, true);
     }

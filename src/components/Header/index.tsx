@@ -24,8 +24,6 @@ function Header ({ gameOver, countdown, setGameOver, setWinner,  setCountDown }:
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
     const { activeUser, chess, gameType } = gameState;
 
-    const options = Object.keys(GAME_CONFIG);
-
     // 倒计时,每次挂载和数据更新前都会执行一遍
     useEffect(() => {
         if (gameOver) return;
@@ -60,6 +58,7 @@ function Header ({ gameOver, countdown, setGameOver, setWinner,  setCountDown }:
     }
 
     // option下拉选项
+    const options = Object.keys(GAME_CONFIG);
     const optionEl = options.map((item, index) => {
         return (
             <option

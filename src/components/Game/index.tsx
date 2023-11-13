@@ -40,7 +40,7 @@ function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameT
         setBoardHistory([initBoard(boardSize)]);
         setCurrentMove(0);
         setAxisHistory([[0, 0]]);
-    }, [gameType]);
+    }, [gameType, boardSize]);
 
     /**
      * 棋盘初始化
@@ -55,23 +55,23 @@ function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameT
     /**
      * 记录回退记录
      * @param nextBoard 最新棋盘
-     * @param coordinate 坐标
+     * @param coordinate最新坐标
      * retrun void
      */
-    function recordStep (nextBoard: string[][], coordinate:number[]) {
-        const nextHistory = [...boardHistory.slice(0, currentMove + 1), nextBoard];
-        const axisArray = [...axisHistory.slice(0, currentMove + 1), coordinate];
+    function recordStep (nextBoard: string[][], nextCoordinate:number[]) {
+        const nextBoardHistory = [...boardHistory.slice(0, currentMove + 1), nextBoard];
+        const nextAxisHistory = [...axisHistory.slice(0, currentMove + 1), nextCoordinate];
 
-        setCurrentMove(nextHistory.length - 1);
-        setBoardHistory(nextHistory);
-        setAxisHistory(axisArray);
+        setCurrentMove(nextBoardHistory.length - 1);
+        setBoardHistory(nextBoardHistory);
+        setAxisHistory(nextAxisHistory);
     }
 
     /**
      * 计算游戏状态
-     * @param coordinate 坐标
+     * @param coordinate 最新坐标
      * @param step 步骤
-     * @param isJumpTo 是否回退
+     * @param isJumpTo 是否回退查看
      * @returns
      */
     function calcGameStatus (coordinate:number[], step:number, isJumpTo:boolean) {
@@ -81,6 +81,7 @@ function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameT
         if (isJumpTo) {
             nextPlayer = step % 2 === 0 ? chess[1] : chess[0];
             currentPlayer = chess[step % 2];
+            setCurrentMove(step);
         } else {
             nextPlayer = chess[step % 2];
             currentPlayer = step % 2 === 0 ? chess[1] : chess[0];
@@ -120,7 +121,6 @@ function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameT
             <div className="game-history">
                 <History
                     currentMove={currentMove}
-                    setCurrentMove={setCurrentMove}
                     axisHistory={axisHistory}
                     boardHistory={boardHistory}
                     calcGameStatus={calcGameStatus}/>

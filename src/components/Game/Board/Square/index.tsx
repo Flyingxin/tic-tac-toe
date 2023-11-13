@@ -18,7 +18,7 @@ interface SquareType {
  * @returns
  */
 const Square = ({ gameType, row, colum, value, handleClick }: SquareType) => {
-    console.warn('Square loading----');
+    // console.warn('Square loading----');
 
     /**
      * 格子点击事件
@@ -31,9 +31,10 @@ const Square = ({ gameType, row, colum, value, handleClick }: SquareType) => {
         <button
             className='square'
             onClick={onSquareClick}>
-            {        gameType === 'goMoKu' ?
-                <span className={value}></span> :
-                <span >{value}</span>
+            {
+                gameType === 'goMoKu' ?
+                    <span className={value}></span> :
+                    <span >{value}</span>
             }
         </button>
     );

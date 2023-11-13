@@ -1,5 +1,5 @@
-import { useCallback, useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useCallback, useState, useEffect } from 'react';
 import { StateTypes } from '@/components/Game/gameConfig';
 import Square from './Square';
 import './index.css';
@@ -21,7 +21,7 @@ interface BoardType {
  */
 const Board = ({ gameOver, currentMove, board, recordStep, calcGameStatus }: BoardType) => {
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { activeUser, boardSize, gameType } = gameState;
+    const { activeUser, gameType } = gameState;
     const [coordinate, setCoordinate] = useState([0, 0]);
     const [isGameStart, setIsGameStart] = useState(false);
 
@@ -68,7 +68,7 @@ const Board = ({ gameOver, currentMove, board, recordStep, calcGameStatus }: Boa
                         />
                     }
                     {/* 判断是否换行 */}
-                    {boardSize - 1 === columIndex ? <br ></br> : ''}
+                    {item.length - 1 === columIndex ? <br ></br> : ''}
                 </span>
             );
         });
