@@ -1,25 +1,18 @@
-import { memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StateTypes } from '@/components/Game/gameConfig';
 import Board from './Board';
 import History from './History';
 import Notification from '../Notification';
 import calcWinner from '@/utils/judge';
-import { playGame } from '@/store/gameStatus';
+import { playGame, recordSteps, callBackStep } from '@/store/gameStatus';
 import './index.css';
 
 interface GameType {
-    boardHistory:string[][][];
-    axisHistory:number[][];
-    currentMove:number;
     gameOver: boolean;
     winner: string;
     setGameOver: Function;
     setWinner:Function;
     setCountDown:Function;
-    setBoardHistory:Function;
-    setAxisHistory:Function;
-    setCurrentMove:Function;
 
 }
 
@@ -32,13 +25,10 @@ interface GameType {
  * @param setCountDown: 修改倒计时;
  * @returns component
  */
-function Game ({
-    boardHistory, axisHistory, currentMove, gameOver, winner, setGameOver,
-    setWinner,  setCountDown, setBoardHistory, setAxisHistory, setCurrentMove,
-}:GameType) {
+function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameType) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { boardSize, finishCount, chess, time } = gameState;
+    const { boardSize, finishCount, chess, time, boardHistory, axisHistory, currentMove } = gameState;
 
     const board = boardHistory[currentMove];
 
@@ -53,9 +43,12 @@ function Game ({
         const nextBoardHistory = [...boardHistory.slice(0, currentMove + 1), nextBoard];
         const nextAxisHistory = [...axisHistory.slice(0, currentMove + 1), nextCoordinate];
 
-        setCurrentMove(nextBoardHistory.length - 1);
-        setBoardHistory(nextBoardHistory);
-        setAxisHistory(nextAxisHistory);
+        const newState = {
+            boardHistory: nextBoardHistory,
+            axisHistory: nextAxisHistory,
+            currentMove: nextBoardHistory.length - 1,
+        };
+        dispatch(recordSteps(newState));
     }
 
     /**
@@ -72,7 +65,7 @@ function Game ({
         if (isJumpTo) {
             nextPlayer = step % 2 === 0 ? chess[1] : chess[0];
             currentPlayer = chess[step % 2];
-            setCurrentMove(step);
+            dispatch(callBackStep({ currentMove: step }));
         } else {
             nextPlayer = chess[step % 2];
             currentPlayer = step % 2 === 0 ? chess[1] : chess[0];
@@ -119,4 +112,4 @@ function Game ({
         </div>
     );
 }
-export default memo(Game);
+export default Game;

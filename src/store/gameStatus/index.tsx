@@ -14,6 +14,16 @@ export const gameStatus = createSlice({
             state = { ...state, activeUser };
             return state;
         },
+        recordSteps: (state, action) => {
+            const { boardHistory, axisHistory, currentMove } = action.payload;
+            state = { ...state, boardHistory, axisHistory, currentMove };
+            return state;
+        },
+        callBackStep: (state, action) => {
+            const { currentMove } = action.payload;
+            state = { ...state, currentMove };
+            return state;
+        },
     },
 });
 
@@ -21,6 +31,8 @@ export const gameStatus = createSlice({
 export const {
     initGame,
     playGame,
+    recordSteps,
+    callBackStep,
 } = gameStatus.actions;
 
 export default gameStatus.reducer;

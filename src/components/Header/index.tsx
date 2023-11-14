@@ -9,9 +9,6 @@ interface HeaderType {
     setGameOver: Function;
     setWinner: Function;
     setCountDown: Function;
-    setBoardHistory:Function;
-    setAxisHistory:Function;
-    setCurrentMove:Function;
 }
 /**
  * 顶部组件，用于切换游戏，游戏倒计时
@@ -22,10 +19,7 @@ interface HeaderType {
  * @param setCountDown: 修改倒计时;
  * @returns component
  */
-function Header ({
-    gameOver, countdown, setGameOver, setWinner,
-    setCountDown, setBoardHistory, setAxisHistory, setCurrentMove,
-}:HeaderType) {
+function Header ({ gameOver, countdown, setGameOver, setWinner, setCountDown }:HeaderType) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
     const { activeUser, chess } = gameState;
@@ -57,20 +51,7 @@ function Header ({
         dispatch(initGame({ gameType: selectValue }));
         setGameOver(false);
         setCountDown(GAME_CONFIG[selectValue].time);
-        setBoardHistory([initBoard(GAME_CONFIG[selectValue].boardSize)]);
-        setAxisHistory([[0, 0]]);
-        setCurrentMove(0);
         // event.preventDefault();
-    }
-
-    /**
-     * 棋盘初始化
-     * @param boardSize 棋盘尺寸
-     * @returns string[][]
-     */
-    function initBoard (boardSize: number) {
-        const rowArr = Array(boardSize).fill(null);
-        return rowArr.map(() =>  rowArr);
     }
 
     // option下拉选项
