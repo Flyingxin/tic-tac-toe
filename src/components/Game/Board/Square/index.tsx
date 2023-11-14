@@ -1,4 +1,4 @@
-import { Component, memo } from 'react';
+import { Component } from 'react';
 import './index.css';
 type Props = {
     gameType: string;
@@ -17,11 +17,11 @@ type Props = {
  * @returns
  */
 class Square extends Component<Props, any> {
-    render () {
+    componentDidMount () {
         console.warn('Square Loading -----------');
-
+    }
+    render () {
         const { gameType, row, colum, value, handleClick } = this.props;
-
         /**
          * 格子点击事件
          * return void
@@ -43,5 +43,5 @@ class Square extends Component<Props, any> {
     }
 }
 
-export default memo(Square);
+export default Square;
 

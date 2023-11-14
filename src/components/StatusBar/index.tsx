@@ -1,11 +1,11 @@
-import { Component, memo } from 'react';
-import { connect } from 'react-redux';
-import mapStateToProps from '@/utils/mapStateToProps';
+import { Component } from 'react';
 import GAME_CONFIG from '@/components/Game/gameConfig';
 import './index.css';
 type Props = {
     gameType:string;
     chess: string[];
+}
+type State = {
 }
 /**
  * 状态栏组件，呈现玩家棋子组件
@@ -13,10 +13,11 @@ type Props = {
  * @param chess 棋子样式
  * @returns component
  */
-class StatusBar extends Component<Props, any> {
-    render () {
+class StatusBar extends Component<Props, State> {
+    componentDidMount () {
         console.warn('StatusBar loading----');
-
+    }
+    render () {
         const gameList = Object.keys(GAME_CONFIG);
         const { gameType, chess } = this.props;
 
@@ -55,4 +56,4 @@ class StatusBar extends Component<Props, any> {
     }
 }
 
-export default memo(connect(mapStateToProps)(StatusBar));
+export default StatusBar;

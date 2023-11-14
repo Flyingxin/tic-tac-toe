@@ -1,9 +1,11 @@
-import { Component, memo } from 'react';
+import { Component } from 'react';
 import './index.css';
 
 type Props = {
     gameOver: boolean;
     winner:string;
+}
+type State = {
 }
 /**
  * 通知栏组件，用于展示游戏是否结束
@@ -11,10 +13,13 @@ type Props = {
  * @param winner 胜利者
  * @returns component
  */
-class Notification extends Component<Props, any> {
+class Notification extends Component<Props, State> {
+    componentDidMount () {
+        console.warn('Notification loading----');
+    }
+
     render () {
         const { gameOver, winner } = this.props;
-        console.warn('Notification loading----');
 
         const winnerEl = (<h3>胜利方为：{winner}</h3>);
         const peaceEl = (<h3>和棋</h3>);
@@ -32,4 +37,4 @@ class Notification extends Component<Props, any> {
         );
     }
 }
-export default memo(Notification);
+export default Notification;
