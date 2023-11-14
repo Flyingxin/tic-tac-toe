@@ -1,14 +1,20 @@
-import { useSelector } from 'react-redux';
-import { useCallback, useState, useEffect } from 'react';
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import mapStateToProps from '@/utils/mapStateToProps';
 import { StateTypes } from '@/components/Game/gameConfig';
 import Square from './Square';
 import './index.css';
-interface BoardType {
+type Props = {
+    gameState:StateTypes;
+    dispatch: Function;
     gameOver:boolean;
     currentMove:number;
-    board: string[][];
-    recordStep: Function;
+    board:string[][];
+    recordStep:Function;
     calcGameStatus:Function;
+}
+type State = {
+    coordinate: number[];
 }
 /**
  * 棋盘组件，用于展示棋盘基础功能
@@ -19,27 +25,13 @@ interface BoardType {
  * @param calcGameStatus 计算游戏状态
  * @returns component
  */
-const Board = ({ gameOver, currentMove, board, recordStep, calcGameStatus }: BoardType) => {
-    const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
-    const { activeUser, gameType } = gameState;
-    const [coordinate, setCoordinate] = useState([0, 0]);
-    const [isGameStart, setIsGameStart] = useState(false);
+class Board extends Component<Props, State> {
+    constructor (props:any) {
+        super(props);
 
-    // 新增棋子监听
-    useEffect(() => {
-        if (isGameStart) {
-            const [row, colum] = coordinate;
-            if (gameOver || board[row][colum]) return;
-            const nextBoard = JSON.parse(JSON.stringify(board));  // 深拷贝 slice是浅拷贝
-            nextBoard[row][colum] = activeUser;
-            // 记录历史记录
-            recordStep(nextBoard, coordinate);
-            // 计算游戏状态
-            calcGameStatus(coordinate, currentMove, false);
-        } else {
-            setIsGameStart(true);
-        }
-    }, [coordinate]);
+        this.renderBoardEl = this.renderBoardEl.bind(this);
+        this.handleClick = this.handleClick.bind(this);
+    }
 
     /**
      * 下棋
@@ -47,39 +39,59 @@ const Board = ({ gameOver, currentMove, board, recordStep, calcGameStatus }: Boa
      * @param colum 列
      * @returns
      */
-    const handleClick = useCallback((row: number, colum: number) => {
-        setCoordinate([row, colum]);
-    }, []);
+    handleClick (row: number, colum: number) {
+        const  coordinate  = [row, colum];
+        const { activeUser } = this.props.gameState;
+        const { gameOver, board, currentMove, recordStep, calcGameStatus } = this.props;
 
-    // 渲染棋盘
-    const boardEl = board.map((item, rowIndex) => {
-        return item.map((_item, columIndex) => {
-            return (
-                <span
-                    key={`${rowIndex}${columIndex}`}>
-                    {
-                        <Square
-                            key={`${rowIndex}${columIndex}`}
-                            gameType={gameType}
-                            row={rowIndex}
-                            colum={columIndex}
-                            value={board[rowIndex][columIndex]}
-                            handleClick={handleClick}
-                        />
-                    }
-                    {/* 判断是否换行 */}
-                    {item.length - 1 === columIndex ? <br ></br> : ''}
-                </span>
-            );
+        if (gameOver || board[row][colum]) return;
+        const nextBoard = JSON.parse(JSON.stringify(board));  // 深拷贝 slice是浅拷贝
+        nextBoard[row][colum] = activeUser;
+
+        // 记录历史记录
+        recordStep(nextBoard, coordinate);
+        // 计算游戏状态
+        calcGameStatus(coordinate, currentMove, false);
+    }
+
+    /**
+     * 渲染棋盘
+     */
+    renderBoardEl () {
+        const { board } = this.props;
+        const { gameType } = this.props.gameState;
+        const boardEl = board.map((item, rowIndex) => {
+            return item.map((_item, columIndex) => {
+                return (
+                    <span
+                        key={`${rowIndex}${columIndex}`}>
+                        {
+                            <Square
+                                key={`${rowIndex}${columIndex}`}
+                                gameType={gameType}
+                                row={rowIndex}
+                                colum={columIndex}
+                                value={board[rowIndex][columIndex]}
+                                handleClick={this.handleClick}
+                            />
+                        }
+                        {/* 判断是否换行 */}
+                        {item.length - 1 === columIndex ? <br ></br> : ''}
+                    </span>
+                );
+            });
         });
-    });
+        return boardEl;
+    }
 
-    return (
-        <div className='container'>
-            <div className="game">
-                {boardEl}
+    render () {
+        return (
+            <div className='container'>
+                <div className="game">
+                    {this.renderBoardEl()}
+                </div>
             </div>
-        </div>
-    );
-};
-export default Board;
+        );
+    }
+}
+export default connect(mapStateToProps)(Board);

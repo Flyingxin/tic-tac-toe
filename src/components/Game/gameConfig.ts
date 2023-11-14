@@ -6,6 +6,9 @@ export interface StateTypes {
     gameType: string;
     finishCount: number;
     time: number;
+    boardHistory:string[][][];
+    axisHistory:number[][];
+    currentMove:number;
 }
 interface ConfigTypes {
     [gameType: string]: StateTypes;
@@ -20,7 +23,11 @@ const GAME_CONFIG: ConfigTypes = {
         time: 5,
         activeUser: 'black',
         chess: ['white', 'black'],
+
         gameType: 'goMoKu',
+        boardHistory: [initBoard(14)],
+        axisHistory: [[0, 0]],
+        currentMove: 0,
     },
     // 井字棋
     ticTacToe: {
@@ -31,6 +38,18 @@ const GAME_CONFIG: ConfigTypes = {
         activeUser: 'X',
         chess: ['O', 'X'],
         gameType: 'ticTacToe',
+        boardHistory: [initBoard(3)],
+        axisHistory: [[0, 0]],
+        currentMove: 0,
     },
 };
 export default GAME_CONFIG;
+/**
+ * 棋盘初始化
+ * @param boardSize 棋盘尺寸
+ * @returns string[][]
+ */
+function initBoard (boardSize: number) {
+    const rowArr = Array(boardSize).fill(null);
+    return rowArr.map(() =>  rowArr);
+}
