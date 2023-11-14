@@ -10,12 +10,12 @@ import Notification from '../Notification';
 import './index.css';
 
 type Props = {
-    gameState:StateTypes;
+    gameState: StateTypes;
     gameOver: boolean;
     winner: string;
     dispatch: Function;
-    setCountdown:Function;
-    setGameStatus:Function;
+    setCountdown: Function;
+    setGameStatus: Function;
 }
 /**
  * 游戏组件，用于管理棋盘与历史记录组件
@@ -27,7 +27,7 @@ type Props = {
  * @returns component
  */
 class Game extends Component<Props, any> {
-    constructor (props:any) {
+    constructor(props: any) {
         super(props);
 
         this.recordStep = this.recordStep.bind(this);  // 更改this指向
@@ -39,8 +39,8 @@ class Game extends Component<Props, any> {
      * @param coordinate 最新坐标
      * retrun void
      */
-    recordStep (nextBoard: string[][], nextCoordinate:number[]) {
-        const {  dispatch } = this.props;
+    recordStep(nextBoard: string[][], nextCoordinate: number[]) {
+        const { dispatch } = this.props;
         const { boardHistory, axisHistory, currentMove } = this.props.gameState;
         const nextBoardHistory = [...boardHistory.slice(0, currentMove + 1), nextBoard];
         const nextAxisHistory = [...axisHistory.slice(0, currentMove + 1), nextCoordinate];
@@ -60,12 +60,12 @@ class Game extends Component<Props, any> {
      * @param isJumpTo 是否回退查看
      * @returns
      */
-    calcGameStatus (coordinate:number[], step:number, isJumpTo:boolean) {
-        const {  setGameStatus, dispatch } = this.props;
+    calcGameStatus(coordinate: number[], step: number, isJumpTo: boolean) {
+        const { setGameStatus, dispatch } = this.props;
         const { boardHistory } = this.props.gameState;
         const { chess, finishCount, boardSize, time } = this.props.gameState;
         // 当前选手,下一个选手
-        let nextPlayer; let  currentPlayer;
+        let nextPlayer; let currentPlayer;
 
         if (isJumpTo) {
             nextPlayer = step % 2 === 0 ? chess[1] : chess[0];
@@ -90,7 +90,7 @@ class Game extends Component<Props, any> {
             dispatch(playGame({ activeUser: nextPlayer }));
         }
     }
-    render () {
+    render() {
         const { gameOver, winner } = this.props;
         const { boardHistory, currentMove, axisHistory } = this.props.gameState;
         const board = boardHistory[currentMove];
@@ -102,17 +102,17 @@ class Game extends Component<Props, any> {
                         gameOver={gameOver}
                         currentMove={currentMove}
                         recordStep={this.recordStep}
-                        calcGameStatus={this.calcGameStatus}/>
+                        calcGameStatus={this.calcGameStatus} />
                     <Notification
                         gameOver={gameOver}
-                        winner={winner}/>
+                        winner={winner} />
                 </div>
                 <div className="game-history">
                     <History
                         currentMove={currentMove}
                         axisHistory={axisHistory}
                         boardHistory={boardHistory}
-                        calcGameStatus={this.calcGameStatus}/>
+                        calcGameStatus={this.calcGameStatus} />
                 </div>
             </div>
         );

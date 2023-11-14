@@ -5,6 +5,6 @@ import { StateTypes } from '@/components/Game/gameConfig';
  * @param state
  * @returns
  */
-export default function mapStateToProps (state: StateTypes) {
+export default function mapStateToProps(state: StateTypes) {
     return { gameState: state };
 }

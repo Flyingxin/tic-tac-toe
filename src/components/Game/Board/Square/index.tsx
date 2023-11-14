@@ -2,8 +2,8 @@ import { Component } from 'react';
 import './index.css';
 type Props = {
     gameType: string;
-    row:number;
-    colum:number;
+    row: number;
+    colum: number;
     value: string;
     handleClick: Function;
 }
@@ -17,10 +17,10 @@ type Props = {
  * @returns
  */
 class Square extends Component<Props, any> {
-    componentDidMount () {
+    componentDidMount() {
         console.warn('Square Loading -----------');
     }
-    render () {
+    render() {
         const { gameType, row, colum, value, handleClick } = this.props;
         /**
          * 格子点击事件

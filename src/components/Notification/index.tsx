@@ -3,7 +3,7 @@ import './index.css';
 
 type Props = {
     gameOver: boolean;
-    winner:string;
+    winner: string;
 }
 type State = {
 }
@@ -14,11 +14,11 @@ type State = {
  * @returns component
  */
 class Notification extends Component<Props, State> {
-    componentDidMount () {
+    componentDidMount() {
         console.warn('Notification loading----');
     }
 
-    render () {
+    render() {
         const { gameOver, winner } = this.props;
 
         const winnerEl = (<h3>胜利方为：{winner}</h3>);

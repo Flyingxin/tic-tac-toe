@@ -1,26 +1,26 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import  mapStateToProps from '@/utils/mapStateToProps';
+import mapStateToProps from '@/utils/mapStateToProps';
 import { StateTypes } from './components/Game/gameConfig';
 import Game from './components/Game';
 import Header from './components/Header';
 import StatusBar from './components/StatusBar';
 import './App.css';
 type Props = {
-    gameState:StateTypes;
+    gameState: StateTypes;
     dispatch: Function;
 }
 type State = {
-    gameOver:boolean;
-    winner:string;
-    countdown:number;
+    gameOver: boolean;
+    winner: string;
+    countdown: number;
 }
 /**
  * App组件用于管理所有子组件
  * @returns
  */
 class App extends Component<Props, State> {
-    constructor (props:any) {
+    constructor(props: any) {
         super(props);
         const { time } = this.props.gameState;
         this.state = {
@@ -37,9 +37,9 @@ class App extends Component<Props, State> {
      * @param boardSize 棋盘尺寸
      * @returns string[][]
      */
-    initBoard (boardSize: number) {
+    initBoard(boardSize: number) {
         const rowArr = Array(boardSize).fill(null);
-        return rowArr.map(() =>  rowArr);
+        return rowArr.map(() => rowArr);
     }
 
     /**
@@ -47,7 +47,7 @@ class App extends Component<Props, State> {
      * @param boardSize 棋盘尺寸
      * @returns string[][]
      */
-    setCountdown (countdown:number) {
+    setCountdown(countdown: number) {
         this.setState({
             ...this.state,
             countdown,
@@ -58,7 +58,7 @@ class App extends Component<Props, State> {
      * @param boardSize 棋盘尺寸
      * @returns string[][]
      */
-    setGameStatus (gameOver:boolean, countdown:number = 0, winner:string = '') {
+    setGameStatus(gameOver: boolean, countdown: number = 0, winner: string = '') {
         this.setState({
             gameOver,
             countdown,
@@ -79,7 +79,7 @@ class App extends Component<Props, State> {
     //     });
     // }
 
-    render () {
+    render() {
         const { gameType, chess } = this.props.gameState;
         const { gameOver, countdown, winner } = this.state;
         return (
@@ -88,11 +88,11 @@ class App extends Component<Props, State> {
                     gameOver={gameOver}
                     countdown={countdown}
                     setCountdown={this.setCountdown}
-                    setGameStatus={this.setGameStatus}/>
+                    setGameStatus={this.setGameStatus} />
                 <div className='main'>
                     <StatusBar
                         gameType={gameType}
-                        chess={chess}/>
+                        chess={chess} />
 
                     <Game
                         gameOver={gameOver}

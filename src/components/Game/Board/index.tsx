@@ -5,13 +5,13 @@ import { StateTypes } from '@/components/Game/gameConfig';
 import Square from './Square';
 import './index.css';
 type Props = {
-    gameState:StateTypes;
+    gameState: StateTypes;
     dispatch: Function;
-    gameOver:boolean;
-    currentMove:number;
-    board:string[][];
-    recordStep:Function;
-    calcGameStatus:Function;
+    gameOver: boolean;
+    currentMove: number;
+    board: string[][];
+    recordStep: Function;
+    calcGameStatus: Function;
 }
 type State = {
     coordinate: number[];
@@ -26,7 +26,7 @@ type State = {
  * @returns component
  */
 class Board extends Component<Props, State> {
-    constructor (props:any) {
+    constructor(props: any) {
         super(props);
 
         this.renderBoardEl = this.renderBoardEl.bind(this);
@@ -39,8 +39,8 @@ class Board extends Component<Props, State> {
      * @param colum 列
      * @returns
      */
-    handleClick (row: number, colum: number) {
-        const  coordinate  = [row, colum];
+    handleClick(row: number, colum: number) {
+        const coordinate = [row, colum];
         const { activeUser } = this.props.gameState;
         const { gameOver, board, currentMove, recordStep, calcGameStatus } = this.props;
 
@@ -57,7 +57,7 @@ class Board extends Component<Props, State> {
     /**
      * 渲染棋盘
      */
-    renderBoardEl () {
+    renderBoardEl() {
         const { board } = this.props;
         const { gameType } = this.props.gameState;
         const boardEl = board.map((item, rowIndex) => {
@@ -84,7 +84,7 @@ class Board extends Component<Props, State> {
         return boardEl;
     }
 
-    render () {
+    render() {
         return (
             <div className='container'>
                 <div className="game">

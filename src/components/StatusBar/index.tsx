@@ -2,7 +2,7 @@ import { Component } from 'react';
 import GAME_CONFIG from '@/components/Game/gameConfig';
 import './index.css';
 type Props = {
-    gameType:string;
+    gameType: string;
     chess: string[];
 }
 type State = {
@@ -14,10 +14,10 @@ type State = {
  * @returns component
  */
 class StatusBar extends Component<Props, State> {
-    componentDidMount () {
+    componentDidMount() {
         console.warn('StatusBar loading----');
     }
-    render () {
+    render() {
         const gameList = Object.keys(GAME_CONFIG);
         const { gameType, chess } = this.props;
 
@@ -26,19 +26,19 @@ class StatusBar extends Component<Props, State> {
          * @param gameType 游戏类型
          * @returns component
          */
-        const playerEl = (gameType:string) => {
+        const playerEl = (gameType: string) => {
             return gameType === 'goMoKu' ?
                 <>
-                玩家1:
-                    <div className={ 'black'}></div>
-                玩家2:
-                    <div className={ 'white'}></div>
+                    玩家1:
+                    <div className={'black'}></div>
+                    玩家2:
+                    <div className={'white'}></div>
                 </> :
                 <>
-                玩家1:
-                    <div className= 'black1'> {chess[1]} </div>
-                玩家2:
-                    <div className= 'black1'> {chess[0]} </div>
+                    玩家1:
+                    <div className='black1'> {chess[1]} </div>
+                    玩家2:
+                    <div className='black1'> {chess[0]} </div>
                 </>;
         };
 
