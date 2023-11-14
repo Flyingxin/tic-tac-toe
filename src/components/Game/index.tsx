@@ -11,8 +11,8 @@ interface GameType {
     gameOver: boolean;
     winner: string;
     setGameOver: Function;
-    setWinner:Function;
-    setCountDown:Function;
+    setWinner: Function;
+    setCountDown: Function;
 
 }
 
@@ -25,7 +25,7 @@ interface GameType {
  * @param setCountDown: 修改倒计时;
  * @returns component
  */
-function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameType) {
+function Game({ gameOver, winner, setGameOver, setWinner, setCountDown }: GameType) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
     const { boardSize, finishCount, chess, time, boardHistory, axisHistory, currentMove } = gameState;
@@ -39,7 +39,7 @@ function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameT
      * @param coordinate最新坐标
      * retrun void
      */
-    function recordStep (nextBoard: string[][], nextCoordinate:number[]) {
+    function recordStep(nextBoard: string[][], nextCoordinate: number[]) {
         const nextBoardHistory = [...boardHistory.slice(0, currentMove + 1), nextBoard];
         const nextAxisHistory = [...axisHistory.slice(0, currentMove + 1), nextCoordinate];
 
@@ -58,9 +58,9 @@ function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameT
      * @param isJumpTo 是否回退查看
      * @returns
      */
-    function calcGameStatus (coordinate:number[], step:number, isJumpTo:boolean) {
+    function calcGameStatus(coordinate: number[], step: number, isJumpTo: boolean) {
         // 当前选手,下一个选手
-        let nextPlayer; let  currentPlayer;
+        let nextPlayer; let currentPlayer;
 
         if (isJumpTo) {
             nextPlayer = step % 2 === 0 ? chess[1] : chess[0];
@@ -97,17 +97,17 @@ function Game ({ gameOver, winner, setGameOver, setWinner,  setCountDown }:GameT
                     recordStep={recordStep}
                     calcGameStatus={calcGameStatus}
                     currentMove={currentMove}
-                    gameOver={gameOver}/>
+                    gameOver={gameOver} />
                 <Notification
                     gameOver={gameOver}
-                    winner={winner}/>
+                    winner={winner} />
             </div>
             <div className="game-history">
                 <History
                     currentMove={currentMove}
                     axisHistory={axisHistory}
                     boardHistory={boardHistory}
-                    calcGameStatus={calcGameStatus}/>
+                    calcGameStatus={calcGameStatus} />
             </div>
         </div>
     );

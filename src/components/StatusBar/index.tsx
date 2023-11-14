@@ -2,7 +2,7 @@ import { memo } from 'react';
 import GAME_CONFIG from '@/components/Game/gameConfig';
 import './index.css';
 interface StatusBarType {
-    gameType:string;
+    gameType: string;
     chess: string[];
 }
 /**
@@ -11,7 +11,7 @@ interface StatusBarType {
  * @param chess 棋子样式
  * @returns component
  */
-function StatusBar ({ gameType, chess } :StatusBarType) {
+function StatusBar({ gameType, chess }: StatusBarType) {
     console.warn('StatusBar loading----');
 
     const gameList = Object.keys(GAME_CONFIG);
@@ -21,19 +21,19 @@ function StatusBar ({ gameType, chess } :StatusBarType) {
      * @param gameType 游戏类型
      * @returns component
      */
-    const playerEl = (gameType:string) => {
+    const playerEl = (gameType: string) => {
         return gameType === 'goMoKu' ?
             <>
                 玩家1:
-                <div className={ 'black'}></div>
+                <div className={'black'}></div>
                 玩家2:
-                <div className={ 'white'}></div>
+                <div className={'white'}></div>
             </> :
             <>
                 玩家1:
-                <div className= 'black1'> {chess[1]} </div>
+                <div className='black1'> {chess[1]} </div>
                 玩家2:
-                <div className= 'black1'> {chess[0]} </div>
+                <div className='black1'> {chess[0]} </div>
             </>;
     };
 

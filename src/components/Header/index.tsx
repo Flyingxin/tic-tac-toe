@@ -5,7 +5,7 @@ import GAME_CONFIG, { StateTypes } from '@/components/Game/gameConfig';
 import './index.css';
 interface HeaderType {
     gameOver: boolean;
-    countdown:number;
+    countdown: number;
     setGameOver: Function;
     setWinner: Function;
     setCountDown: Function;
@@ -19,7 +19,7 @@ interface HeaderType {
  * @param setCountDown: 修改倒计时;
  * @returns component
  */
-function Header ({ gameOver, countdown, setGameOver, setWinner, setCountDown }:HeaderType) {
+function Header({ gameOver, countdown, setGameOver, setWinner, setCountDown }: HeaderType) {
     const dispatch = useDispatch();
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
     const { activeUser, chess } = gameState;
@@ -45,7 +45,7 @@ function Header ({ gameOver, countdown, setGameOver, setWinner, setCountDown }:H
      * @param event
      * return void
      */
-    function changeGame (event:any) {
+    function changeGame(event: any) {
         const selectValue = event.target.value;
         // console.log(selectValue);
         dispatch(initGame({ gameType: selectValue }));
@@ -70,12 +70,12 @@ function Header ({ gameOver, countdown, setGameOver, setWinner, setCountDown }:H
     gameOver ?
         countdownEl = (<div className='common'>结束</div>) :
         countdownEl =
-            (
-                <div className='common'>
-                    <span>{activeUser}</span>玩家：
-                    <span className={10 >= countdown ? 'danger' : ''}>{`${countdown} 秒`}</span>
-                </div>
-            );
+        (
+            <div className='common'>
+                <span>{activeUser}</span>玩家：
+                <span className={10 >= countdown ? 'danger' : ''}>{`${countdown} 秒`}</span>
+            </div>
+        );
 
     return (
         <div className='toolbar'>

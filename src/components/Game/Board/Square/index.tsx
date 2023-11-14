@@ -2,8 +2,8 @@ import { memo } from 'react';
 import './index.css';
 interface SquareType {
     gameType: string;
-    row:number;
-    colum:number;
+    row: number;
+    colum: number;
     value: string;
     handleClick: Function;
 }

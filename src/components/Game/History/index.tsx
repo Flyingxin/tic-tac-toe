@@ -4,9 +4,9 @@ import { useSelector } from 'react-redux';
 import { StateTypes } from '../gameConfig';
 import './index.css';
 interface HistoryType {
-    currentMove:number;
-    axisHistory:number[][];
-    boardHistory:string[][][];
+    currentMove: number;
+    axisHistory: number[][];
+    boardHistory: string[][][];
     calcGameStatus: Function;
 }
 
@@ -18,7 +18,7 @@ interface HistoryType {
  * @param calcGameStatus 计算游戏状态;
  * @returns component
  */
-function History ({ currentMove, axisHistory, boardHistory, calcGameStatus }:HistoryType): JSX.Element {
+function History({ currentMove, axisHistory, boardHistory, calcGameStatus }: HistoryType): JSX.Element {
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
     const { chess } = gameState;
 
@@ -27,7 +27,7 @@ function History ({ currentMove, axisHistory, boardHistory, calcGameStatus }:His
      * @param step 步骤
      * return void
      */
-    function jumpToStep (step: number) {
+    function jumpToStep(step: number) {
         if (step !== 0 && step === currentMove) return;
         // 计算游戏状态
         calcGameStatus(axisHistory[step], step, true);

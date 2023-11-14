@@ -3,7 +3,7 @@ import './index.css';
 
 interface NotificationType {
     gameOver: boolean;
-    winner:string;
+    winner: string;
 }
 /**
  * 通知栏组件，用于展示游戏是否结束
@@ -11,7 +11,7 @@ interface NotificationType {
  * @param winner 胜利者
  * @returns component
  */
-function Notification ({ gameOver, winner }:NotificationType)  {
+function Notification({ gameOver, winner }: NotificationType) {
     console.warn('Notification loading----');
 
     const winnerEl = (<h3>胜利方为：{winner}</h3>);

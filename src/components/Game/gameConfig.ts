@@ -6,9 +6,9 @@ export interface StateTypes {
     gameType: string;
     finishCount: number;
     time: number;
-    boardHistory:string[][][];
-    axisHistory:number[][];
-    currentMove:number;
+    boardHistory: string[][][];
+    axisHistory: number[][];
+    currentMove: number;
 }
 interface ConfigTypes {
     [gameType: string]: StateTypes;
@@ -49,7 +49,7 @@ export default GAME_CONFIG;
  * @param boardSize 棋盘尺寸
  * @returns string[][]
  */
-function initBoard (boardSize: number) {
+function initBoard(boardSize: number) {
     const rowArr = Array(boardSize).fill(null);
-    return rowArr.map(() =>  rowArr);
+    return rowArr.map(() => rowArr);
 }

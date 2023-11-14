@@ -4,11 +4,11 @@ import { StateTypes } from '@/components/Game/gameConfig';
 import Square from './Square';
 import './index.css';
 interface BoardType {
-    gameOver:boolean;
-    currentMove:number;
+    gameOver: boolean;
+    currentMove: number;
     board: string[][];
     recordStep: Function;
-    calcGameStatus:Function;
+    calcGameStatus: Function;
 }
 /**
  * 棋盘组件，用于展示棋盘基础功能

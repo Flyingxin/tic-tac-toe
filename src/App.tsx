@@ -10,12 +10,12 @@ import './App.css';
  * App组件用于管理所有子组件
  * @returns
  */
-export default function App () {
+export default function App() {
     const gameState = useSelector((state: { gameState: StateTypes }) => state.gameState);
     const { time, gameType, chess } = gameState;
 
     const [gameOver, setGameOver] = useState(false);
-    const [winner, setWinner] =  useState('');
+    const [winner, setWinner] = useState('');
     const [countdown, setCountDown] = useState(time);
 
 
@@ -26,11 +26,11 @@ export default function App () {
                 setGameOver={setGameOver}
                 setWinner={setWinner}
                 countdown={countdown}
-                setCountDown={setCountDown}/>
+                setCountDown={setCountDown} />
             <div className='main'>
                 <StatusBar
                     gameType={gameType}
-                    chess={chess}/>
+                    chess={chess} />
                 <Game
                     gameOver={gameOver}
                     winner={winner}

@@ -7,7 +7,7 @@
  * @param list
  * @returns
  */
-export default function calcWinner (coordinate: number[], piece: string, finishCount: number, list: string[][]) {
+export default function calcWinner(coordinate: number[], piece: string, finishCount: number, list: string[][]) {
     const direction = ['horizontal', 'plusTilt', 'vertical', 'minusTilt'];
 
     for (const angle of direction) {
@@ -27,7 +27,7 @@ export default function calcWinner (coordinate: number[], piece: string, finishC
  * @param list
  * @param count
  */
-function checkLineChess (coordinate: number[], nextChess: number[], direction: string[], piece: string, list: string[][], count: number) {
+function checkLineChess(coordinate: number[], nextChess: number[], direction: string[], piece: string, list: string[][], count: number) {
     const [angle, orientation] = direction;
     const [nextX, nextY] = getNextAxis(nextChess, direction);
     // 下一颗棋子是否存在
@@ -54,7 +54,7 @@ function checkLineChess (coordinate: number[], nextChess: number[], direction: s
  * @param direction
  * @returns
  */
-function getNextAxis (coordinate: number[], direction: string[]) {
+function getNextAxis(coordinate: number[], direction: string[]) {
     const [angle, orientation] = direction;
     const constant = orientation === 'front' ? 1 : -1;
     let [xAxis, yAxis] = coordinate;
