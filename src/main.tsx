@@ -8,5 +8,3 @@ ReactDOM.createRoot(document.getElementById('root')!)
     .render(<Provider store={store}>
         <App />
     </Provider>);
-
-// 严格模式是什么

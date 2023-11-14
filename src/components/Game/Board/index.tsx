@@ -18,6 +18,8 @@ type State = {
 }
 /**
  * 棋盘组件，用于展示棋盘基础功能
+ * @param gameState redux
+ * @param dispatch 派发
  * @param gameOver 游戏状态
  * @param currentMove 当前棋子步骤数
  * @param board 最新棋盘
@@ -26,7 +28,7 @@ type State = {
  * @returns component
  */
 class Board extends Component<Props, State> {
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
 
         this.renderBoardEl = this.renderBoardEl.bind(this);

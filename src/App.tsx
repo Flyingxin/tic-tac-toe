@@ -20,7 +20,7 @@ type State = {
  * @returns
  */
 class App extends Component<Props, State> {
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
         const { time } = this.props.gameState;
         this.state = {
@@ -67,7 +67,7 @@ class App extends Component<Props, State> {
     }
 
     /**
-     * 修改棋盘状态
+     * 修改棋盘状态(已废弃，改用redux)
      * @param boardSize 棋盘尺寸
      * @returns string[][]
      */

@@ -12,6 +12,8 @@ type Props = {
     setCountdown: Function;
     setGameStatus: Function;
 }
+type State = {
+}
 /**
  * 顶部组件，用于切换游戏，游戏倒计时
  * @param gameOver 游戏状态
@@ -21,8 +23,8 @@ type Props = {
  * @param setCountDown: 修改倒计时;
  * @returns component
  */
-class Header extends Component<Props, any> {
-    constructor(props: any) {
+class Header extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         // const { gameType, activeUser } = this.props.gameState;

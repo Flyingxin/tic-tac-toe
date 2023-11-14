@@ -7,6 +7,8 @@ type Props = {
     value: string;
     handleClick: Function;
 }
+type State = {
+}
 /**
  * 棋盘格子组件，用于展示格子信息
  * @param gameType  游戏类型
@@ -16,23 +18,17 @@ type Props = {
  * @param handleClick  格子点击事件
  * @returns
  */
-class Square extends Component<Props, any> {
+class Square extends Component<Props, State> {
     componentDidMount() {
         console.warn('Square Loading -----------');
     }
     render() {
         const { gameType, row, colum, value, handleClick } = this.props;
-        /**
-         * 格子点击事件
-         * return void
-         */
-        const onSquareClick = () => {
-            handleClick(row, colum);
-        };
+
         return (
             <button
                 className='square'
-                onClick={onSquareClick}>
+                onClick={() => handleClick(row, colum)}>
                 {
                     gameType === 'goMoKu' ?
                         <span className={value}></span> :

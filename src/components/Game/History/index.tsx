@@ -15,14 +15,16 @@ type State = {
 }
 /**
  * 历史记录组件
+ * @param gameState redux
  * @param currentMove 当前步骤数
  * @param axisHistory 坐标历史记录;
  * @param boardHistory 棋盘历史记录;
+ * @param dispatch 派发;
  * @param calcGameStatus 计算游戏状态;
  * @returns component
  */
 class History extends Component<Props, State> {
-    constructor(props: any) {
+    constructor(props: Props) {
         super(props);
 
         this.jumpToStep = this.jumpToStep.bind(this);

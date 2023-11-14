@@ -17,17 +17,20 @@ type Props = {
     setCountdown: Function;
     setGameStatus: Function;
 }
+type State = {
+}
 /**
  * 游戏组件，用于管理棋盘与历史记录组件
- * @param gameOver 游戏状态
+ * @param gameState redux数据
+ * @param gameOver 游戏是否结束
  * @param winner 胜利者
- * @param setGameOver: 修改游戏状态;
- * @param setWinner: 修改胜利者;
- * @param setCountDown: 修改倒计时;
+ * @param dispatch 派发
+ * @param setCountdown 修改倒计时
+ * @param setGameStatus 修改游戏状态
  * @returns component
  */
-class Game extends Component<Props, any> {
-    constructor(props: any) {
+class Game extends Component<Props, State> {
+    constructor(props: Props) {
         super(props);
 
         this.recordStep = this.recordStep.bind(this);  // 更改this指向
