@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import './index.css';
 
 type Props = {
@@ -13,12 +13,10 @@ type State = {
  * @param winner 胜利者
  * @returns component
  */
-class Notification extends Component<Props, State> {
-    componentDidMount() {
+class Notification extends PureComponent<Props, State> {
+    render () {
         console.warn('Notification loading----');
-    }
 
-    render() {
         const { gameOver, winner } = this.props;
 
         const winnerEl = (<h3>胜利方为：{winner}</h3>);

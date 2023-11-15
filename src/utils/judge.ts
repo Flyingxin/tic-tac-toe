@@ -1,19 +1,22 @@
-/* eslint-disable max-len */
 /**
  * 判断游戏是否结束
- * @param coordinate
- * @param piece
- * @param finishCount
- * @param list
+ * @param coordinate 坐标 calcChainForChess;
+ * @param piece 棋子类型
+ * @param finishCount 连子数
+ * @param list 棋盘信息
  * @returns
  */
-export default function calcWinner(coordinate: number[], piece: string, finishCount: number, list: string[][]) {
+export default function calcWinner (coordinate: number[], piece: string, finishCount: number, list: string[][]) {
     const direction = ['horizontal', 'plusTilt', 'vertical', 'minusTilt'];
-
     for (const angle of direction) {
-        let count = 1;
-        count = checkLineChess(coordinate, coordinate, [angle, 'front'], piece, list, count);
-        if (count >= finishCount) return true;
+        let count1 = 0;
+        let count2 = 0;
+        count1 = checkLineChess(coordinate, angle, 'front', piece, list, count1);
+        count2 = checkLineChess(coordinate, angle, 'back', piece, list, count2);
+
+        const totalCount = count1 + count2 + 1;
+
+        if (totalCount >= finishCount) return true;
     }
 
     return false;
@@ -27,24 +30,17 @@ export default function calcWinner(coordinate: number[], piece: string, finishCo
  * @param list
  * @param count
  */
-function checkLineChess(coordinate: number[], nextChess: number[], direction: string[], piece: string, list: string[][], count: number) {
-    const [angle, orientation] = direction;
-    const [nextX, nextY] = getNextAxis(nextChess, direction);
+function checkLineChess (
+    coordinate: number[], angle: string, direction: string,
+    piece: string, list: string[][], count: number
+) {
+    const [nextX, nextY] = getNextAxis(coordinate, angle, direction);
     // 下一颗棋子是否存在
     const isExitNextChess = list[nextX] && list[nextX][nextY] && list[nextX][nextY] === piece;
 
-    // 对应角度前边棋子
-    if (orientation === 'front') {
-        if (isExitNextChess) {
-            count++;
-            return checkLineChess(coordinate, [nextX, nextY], direction, piece, list, count);
-        }
-        return checkLineChess(coordinate, coordinate, [angle, 'back'], piece, list, count);
-    }
-    // 对应角度后边边棋子
-    if (orientation === 'back' && isExitNextChess) {
+    if (isExitNextChess) {
         count++;
-        return checkLineChess(coordinate, [nextX, nextY], direction, piece, list, count);
+        return checkLineChess([nextX, nextY], angle, direction, piece, list, count);
     }
     return count;
 }
@@ -54,9 +50,8 @@ function checkLineChess(coordinate: number[], nextChess: number[], direction: st
  * @param direction
  * @returns
  */
-function getNextAxis(coordinate: number[], direction: string[]) {
-    const [angle, orientation] = direction;
-    const constant = orientation === 'front' ? 1 : -1;
+function getNextAxis (coordinate: number[], angle: string, direction: string) {
+    const constant = direction === 'front' ? 1 : -1;
     let [xAxis, yAxis] = coordinate;
     switch (angle) {
         case 'horizontal':

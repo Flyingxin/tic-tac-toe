@@ -8,7 +8,7 @@ module.exports = {
     ],
     rules: {
         'prefer-const': [
-            'error', {  destructuring: 'any', ignoreReadBeforeAssign: false },
+            'error', { destructuring: 'any', ignoreReadBeforeAssign: false },
         ],
         'no-var': 'error',
         'one-var': [
@@ -21,6 +21,10 @@ module.exports = {
         'object-shorthand': 'error',
         quotes: ['error', 'single'],
         indent: ['error', 4, { SwitchCase: 1 }],
+        'linebreak-style': [
+            0,
+            'unix',
+        ],
         // "semi-style": ["error", "last"],
         // ...
     },

@@ -24,7 +24,7 @@ type State = {
  * @returns component
  */
 class Header extends Component<Props, State> {
-    constructor(props: Props) {
+    constructor (props: Props) {
         super(props);
 
         // const { gameType, activeUser } = this.props.gameState;
@@ -37,7 +37,7 @@ class Header extends Component<Props, State> {
      * @param event
      * reture void
      */
-    changeGame(event: any) {
+    changeGame (event: any) {
         const { dispatch, setGameStatus } = this.props;
         const selectValue = event.target.value;
         const { time } = GAME_CONFIG[selectValue];
@@ -60,7 +60,7 @@ class Header extends Component<Props, State> {
      * 生命周期挂载
      * @returns
      */
-    componentDidMount() {
+    componentDidMount () {
         // 倒计时
         let { countdown } = this.props;
         this.timerId = setTimeout(() => {
@@ -71,7 +71,7 @@ class Header extends Component<Props, State> {
     /**
      * 生命周期：数据更新
      */
-    componentDidUpdate() {
+    componentDidUpdate () {
         clearTimeout(this.timerId);
         const { gameOver } = this.props;
         if (gameOver) return;
@@ -89,10 +89,10 @@ class Header extends Component<Props, State> {
             clearTimeout(this.timerId);
         }
     }
-    componentWillUnmount() {
+    componentWillUnmount () {
         if (this.timerId) clearInterval(this.timerId);
     }
-    render() {
+    render () {
         const { activeUser } = this.props.gameState;
         const { gameOver, countdown } = this.props;
         // 倒计时

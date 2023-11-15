@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import calcWinner from '@/utils/judge';
+// import calcWinner from '@/utils/judgeAI';
 import { playGame, recordStep, callBackStep } from '@/store/action';
 import mapStateToProps from '@/utils/mapStateToProps';
 import { StateTypes } from '@/components/Game/gameConfig';
@@ -30,7 +31,7 @@ type State = {
  * @returns component
  */
 class Game extends Component<Props, State> {
-    constructor(props: Props) {
+    constructor (props: Props) {
         super(props);
 
         this.recordStep = this.recordStep.bind(this);  // 更改this指向
@@ -42,7 +43,7 @@ class Game extends Component<Props, State> {
      * @param coordinate 最新坐标
      * retrun void
      */
-    recordStep(nextBoard: string[][], nextCoordinate: number[]) {
+    recordStep (nextBoard: string[][], nextCoordinate: number[]) {
         const { dispatch } = this.props;
         const { boardHistory, axisHistory, currentMove } = this.props.gameState;
         const nextBoardHistory = [...boardHistory.slice(0, currentMove + 1), nextBoard];
@@ -63,7 +64,7 @@ class Game extends Component<Props, State> {
      * @param isJumpTo 是否回退查看
      * @returns
      */
-    calcGameStatus(coordinate: number[], step: number, isJumpTo: boolean) {
+    calcGameStatus (coordinate: number[], step: number, isJumpTo: boolean) {
         const { setGameStatus, dispatch } = this.props;
         const { boardHistory } = this.props.gameState;
         const { chess, finishCount, boardSize, time } = this.props.gameState;
@@ -93,7 +94,7 @@ class Game extends Component<Props, State> {
             dispatch(playGame({ activeUser: nextPlayer }));
         }
     }
-    render() {
+    render () {
         const { gameOver, winner } = this.props;
         const { boardHistory, currentMove, axisHistory } = this.props.gameState;
         const board = boardHistory[currentMove];

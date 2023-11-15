@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import './index.css';
 type Props = {
     gameType: string;
@@ -18,13 +18,11 @@ type State = {
  * @param handleClick  格子点击事件
  * @returns
  */
-class Square extends Component<Props, State> {
-    componentDidMount() {
-        console.warn('Square Loading -----------');
-    }
-    render() {
+class Square extends PureComponent<Props, State> {
+    render () {
         const { gameType, row, colum, value, handleClick } = this.props;
 
+        console.warn('Square Loading -----------');
         return (
             <button
                 className='square'

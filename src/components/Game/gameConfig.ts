@@ -20,7 +20,7 @@ const GAME_CONFIG: ConfigTypes = {
         name: '五字棋',
         boardSize: 14,
         finishCount: 5,
-        time: 5,
+        time: 55,
         activeUser: 'black',
         chess: ['white', 'black'],
 
@@ -49,7 +49,7 @@ export default GAME_CONFIG;
  * @param boardSize 棋盘尺寸
  * @returns string[][]
  */
-function initBoard(boardSize: number) {
+function initBoard (boardSize: number) {
     const rowArr = Array(boardSize).fill(null);
     return rowArr.map(() => rowArr);
 }

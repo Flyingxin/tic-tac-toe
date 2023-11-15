@@ -14,22 +14,40 @@ type State = {
     gameOver: boolean;
     winner: string;
     countdown: number;
+    gameType:string;
+    chess:string[];
 }
 /**
  * App组件用于管理所有子组件
  * @returns
  */
 class App extends Component<Props, State> {
-    constructor(props: Props) {
+    constructor (props: Props) {
         super(props);
-        const { time } = this.props.gameState;
+        const { time, gameType, chess } = this.props.gameState;
         this.state = {
             gameOver: false,
             winner: '',
             countdown: time,
+            gameType,
+            chess,
         };
         this.setGameStatus = this.setGameStatus.bind(this);
         this.setCountdown = this.setCountdown.bind(this);
+    }
+    /**
+     * 生命周期：数据更新
+     * @param prevProps
+     * @param prevState
+     */
+    componentDidUpdate () {
+        // 缓存 StatusBar组件
+        const newGameType = this.props.gameState.gameType;
+        if (this.state.gameType !== newGameType) {
+            // 更新复杂对象的逻辑
+            const { gameType, chess } = this.props.gameState;
+            this.setState({ gameType, chess });
+        }
     }
 
     /**
@@ -37,7 +55,7 @@ class App extends Component<Props, State> {
      * @param boardSize 棋盘尺寸
      * @returns string[][]
      */
-    initBoard(boardSize: number) {
+    initBoard (boardSize: number) {
         const rowArr = Array(boardSize).fill(null);
         return rowArr.map(() => rowArr);
     }
@@ -47,7 +65,7 @@ class App extends Component<Props, State> {
      * @param boardSize 棋盘尺寸
      * @returns string[][]
      */
-    setCountdown(countdown: number) {
+    setCountdown (countdown: number) {
         this.setState({
             ...this.state,
             countdown,
@@ -58,7 +76,7 @@ class App extends Component<Props, State> {
      * @param boardSize 棋盘尺寸
      * @returns string[][]
      */
-    setGameStatus(gameOver: boolean, countdown: number = 0, winner: string = '') {
+    setGameStatus (gameOver: boolean, countdown: number = 0, winner: string = '') {
         this.setState({
             gameOver,
             countdown,
@@ -79,9 +97,8 @@ class App extends Component<Props, State> {
     //     });
     // }
 
-    render() {
-        const { gameType, chess } = this.props.gameState;
-        const { gameOver, countdown, winner } = this.state;
+    render () {
+        const { gameOver, countdown, winner, gameType, chess } = this.state;
         return (
             <>
                 <Header

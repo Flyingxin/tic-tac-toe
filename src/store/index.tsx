@@ -9,7 +9,7 @@ const initialGameState = GAME_CONFIG.goMoKu;
  * @param action
  * @returns
  */
-function gameState(state = initialGameState, action: { type: string, nextStatus: StateTypes }) {
+function gameState (state = initialGameState, action: { type: string, nextStatus: StateTypes }) {
     let newState = JSON.parse(JSON.stringify(state));
     const newVal = action.nextStatus;
     switch (action.type) {

@@ -24,7 +24,7 @@ type State = {
  * @returns component
  */
 class History extends Component<Props, State> {
-    constructor(props: Props) {
+    constructor (props: Props) {
         super(props);
 
         this.jumpToStep = this.jumpToStep.bind(this);
@@ -35,7 +35,7 @@ class History extends Component<Props, State> {
      * @param step 步骤
      * return void
      */
-    jumpToStep(step: number) {
+    jumpToStep (step: number) {
         const { currentMove, axisHistory, calcGameStatus } = this.props;
         if (step !== 0 && step === currentMove) return;
         // 计算游戏状态
@@ -44,7 +44,7 @@ class History extends Component<Props, State> {
     /**
      * 渲染步骤按钮组
      */
-    renderBoardHistoryEl() {
+    renderBoardHistoryEl () {
         const { currentMove, axisHistory, boardHistory } = this.props;
         const { chess } = this.props.gameState;
         const boardHistoryEl = boardHistory.map((_item: string[][], step: number) => {
@@ -63,7 +63,7 @@ class History extends Component<Props, State> {
         });
         return boardHistoryEl;
     }
-    render() {
+    render () {
         return (
             <ul>
                 {this.renderBoardHistoryEl()}

@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import GAME_CONFIG from '@/components/Game/gameConfig';
 import './index.css';
 type Props = {
@@ -6,6 +6,8 @@ type Props = {
     chess: string[];
 }
 type State = {
+    gameType: string;
+    chess: string[];
 }
 /**
  * 状态栏组件，呈现玩家棋子组件
@@ -13,14 +15,12 @@ type State = {
  * @param chess 棋子样式
  * @returns component
  */
-class StatusBar extends Component<Props, State> {
-    componentDidMount() {
-        console.warn('StatusBar loading----');
-    }
-    render() {
+class StatusBar extends PureComponent<Props, State> {
+    render () {
         const gameList = Object.keys(GAME_CONFIG);
         const { gameType, chess } = this.props;
 
+        console.warn('StatusBar loading----');
         /**
          * 棋子样式
          * @param gameType 游戏类型
