@@ -1,6 +1,7 @@
 export interface StateTypes {
     name: string;
     boardSize: number;
+    gameMode:string;
     activeUser: string;
     chess: string[];
     gameType: string;
@@ -19,8 +20,9 @@ const GAME_CONFIG: ConfigTypes = {
     goMoKu: {
         name: '五字棋',
         boardSize: 14,
+        gameMode: 'pvp',
         finishCount: 5,
-        time: 55,
+        time: 5,
         activeUser: 'black',
         chess: ['white', 'black'],
 
@@ -33,10 +35,12 @@ const GAME_CONFIG: ConfigTypes = {
     ticTacToe: {
         name: '井字棋',
         boardSize: 3,
+        gameMode: 'pvp',
         finishCount: 3,
         time: 99,
         activeUser: 'X',
         chess: ['O', 'X'],
+
         gameType: 'ticTacToe',
         boardHistory: [initBoard(3)],
         axisHistory: [[0, 0]],
@@ -44,6 +48,7 @@ const GAME_CONFIG: ConfigTypes = {
     },
 };
 export default GAME_CONFIG;
+
 /**
  * 棋盘初始化
  * @param boardSize 棋盘尺寸

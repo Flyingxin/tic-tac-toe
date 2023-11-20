@@ -43,7 +43,6 @@ class Header extends Component<Props, State> {
         const { time } = GAME_CONFIG[selectValue];
         dispatch(initGame({ gameType: selectValue }));
         setGameStatus(false, time);
-        // clearInterval(this.timerId);
         // event.preventDefault();
     }
 

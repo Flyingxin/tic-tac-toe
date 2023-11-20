@@ -4,10 +4,9 @@ import './index.css';
 type Props = {
     gameType: string;
     chess: string[];
+    setGameMode: Function;
 }
 type State = {
-    gameType: string;
-    chess: string[];
 }
 /**
  * 状态栏组件，呈现玩家棋子组件
@@ -16,6 +15,23 @@ type State = {
  * @returns component
  */
 class StatusBar extends PureComponent<Props, State> {
+    constructor (props: Props) {
+        super(props);
+        this.changeMode = this.changeMode.bind(this);
+    }
+
+    /**
+     * 切换游戏模式
+     * @returns void
+     */
+    changeMode (event:any) {
+        const { setGameMode } = this.props;
+        const selectValue = event.target.value;
+        setGameMode(selectValue);
+        // console.log(selectValue);
+    }
+
+
     render () {
         const gameList = Object.keys(GAME_CONFIG);
         const { gameType, chess } = this.props;
@@ -42,13 +58,36 @@ class StatusBar extends PureComponent<Props, State> {
                 </>;
         };
 
+        /**
+         * 游戏模式
+         * @param gameType 游戏类型
+         * @returns component
+         */
+        const modeEl = (gameType: string) => {
+            return gameType !== 'goMoKu' ?
+                <>
+                    <select
+                        className='gameMode'
+                        onChange={this.changeMode}>
+                        <option value="pvp">双人对战</option>
+                        <option value="pve_player">玩家先手(人机)</option>
+                        <option value="pve_computer">人机先手(人机)</option>
+                    </select>
+                </> :
+                <></>;
+        };
+
         return gameList.map((_item, index) => {
             if (gameType === gameList[index]) {
                 return (
                     <div
-                        key={index}
-                        className='players'>
-                        {playerEl(gameType)}
+                        key={index}>
+                        <div
+                            key={index}
+                            className='players'>
+                            {playerEl(gameType)}
+                        </div>
+                        {modeEl(gameType)}
                     </div>
                 );
             }

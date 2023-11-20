@@ -1,7 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
 import calcWinner from '@/utils/judge';
-// import calcWinner from '@/utils/judgeAI';
 import { playGame, recordStep, callBackStep } from '@/store/action';
 import mapStateToProps from '@/utils/mapStateToProps';
 import { StateTypes } from '@/components/Game/gameConfig';
@@ -33,10 +32,10 @@ type State = {
 class Game extends Component<Props, State> {
     constructor (props: Props) {
         super(props);
-
         this.recordStep = this.recordStep.bind(this);  // 更改this指向
         this.calcGameStatus = this.calcGameStatus.bind(this);
     }
+
     /**
      * 记录回退记录
      * @param nextBoard 最新棋盘
@@ -54,7 +53,6 @@ class Game extends Component<Props, State> {
             currentMove: nextBoardHistory.length - 1,
         };
         dispatch(recordStep(newState));
-        // setBoardStatus(nextBoardHistory, nextAxisHistory, nextBoardHistory.length - 1);
     }
 
     /**
@@ -68,18 +66,17 @@ class Game extends Component<Props, State> {
         const { setGameStatus, dispatch } = this.props;
         const { boardHistory } = this.props.gameState;
         const { chess, finishCount, boardSize, time } = this.props.gameState;
+
         // 当前选手,下一个选手
         let nextPlayer; let currentPlayer;
-
-        if (isJumpTo) {
+        if (isJumpTo) { // 回退
             nextPlayer = step % 2 === 0 ? chess[1] : chess[0];
             currentPlayer = chess[step % 2];
             dispatch(callBackStep({ currentMove: step }));
-        } else {
+        } else { // 正常下棋
             nextPlayer = chess[step % 2];
             currentPlayer = step % 2 === 0 ? chess[1] : chess[0];
         }
-
         // 游戏规则
         if (calcWinner(coordinate, currentPlayer, finishCount, boardHistory[step])) { // 胜利
             // console.log('win');
@@ -87,13 +84,14 @@ class Game extends Component<Props, State> {
             return;
         } else if (step === (isJumpTo ? (boardSize * boardSize) : (boardSize * boardSize) - 1)) { // 和棋
             // console.log('peace');
-            setGameStatus(true);
+            setGameStatus(true, 0, '');
         } else {  // 继续游戏
             // console.log(`---${step}:当前${currentPlayer}——游戏继续——下一步${nextPlayer}---`);
             setGameStatus(false, time);
             dispatch(playGame({ activeUser: nextPlayer }));
         }
     }
+
     render () {
         const { gameOver, winner } = this.props;
         const { boardHistory, currentMove, axisHistory } = this.props.gameState;
@@ -106,7 +104,8 @@ class Game extends Component<Props, State> {
                         gameOver={gameOver}
                         currentMove={currentMove}
                         recordStep={this.recordStep}
-                        calcGameStatus={this.calcGameStatus} />
+                        calcGameStatus={this.calcGameStatus}
+                    />
                     <Notification
                         gameOver={gameOver}
                         winner={winner} />

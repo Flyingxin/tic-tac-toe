@@ -1,6 +1,6 @@
 import { createStore } from 'redux';
 import GAME_CONFIG, { StateTypes } from '@/components/Game/gameConfig';
-import { INIT_GAME, PLAY_GAME, RECORD_STEP, CALLBACK_STEP } from './action';
+import { INIT_GAME, PLAY_GAME, RECORD_STEP, CALLBACK_STEP, ChANGE_MODE } from './action';
 // 初始化状态
 const initialGameState = GAME_CONFIG.goMoKu;
 /**
@@ -35,6 +35,13 @@ function gameState (state = initialGameState, action: { type: string, nextStatus
                 ...newState,
                 currentMove: newVal.currentMove,
             };
+            return newState;
+        case ChANGE_MODE:
+            newState = {
+                ...newState,
+                gameMode: newVal.gameMode,
+            };
+
             return newState;
         default:
             return newState;

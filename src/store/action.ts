@@ -3,6 +3,7 @@ export const INIT_GAME = 'INIT_GAME';
 export const PLAY_GAME = 'PLAY_GAME';
 export const RECORD_STEP = 'RECORD_STEP';
 export const CALLBACK_STEP = 'CALLBACK_STEP';
+export const ChANGE_MODE = 'ChANGE_MODE';
 /**
  * 初始化游戏
  * @param nextStatus
@@ -47,3 +48,15 @@ export function callBackStep (nextStatus:any) {
         nextStatus,
     };
 }
+/**
+ * 回滚历史记录
+ * @param nextStatus
+ * @returns
+ */
+export function changeMode (nextStatus:any) {
+    return {
+        type: ChANGE_MODE,
+        nextStatus,
+    };
+}
+

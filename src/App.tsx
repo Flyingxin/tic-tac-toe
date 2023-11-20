@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { connect } from 'react-redux';
 import mapStateToProps from '@/utils/mapStateToProps';
 import { StateTypes } from './components/Game/gameConfig';
+import { changeMode, initGame } from './store/action';
 import Game from './components/Game';
 import Header from './components/Header';
 import StatusBar from './components/StatusBar';
@@ -14,8 +15,8 @@ type State = {
     gameOver: boolean;
     winner: string;
     countdown: number;
-    gameType:string;
-    chess:string[];
+    gameType: string;
+    chess: string[];
 }
 /**
  * App组件用于管理所有子组件
@@ -29,11 +30,13 @@ class App extends Component<Props, State> {
             gameOver: false,
             winner: '',
             countdown: time,
+
             gameType,
             chess,
         };
         this.setGameStatus = this.setGameStatus.bind(this);
         this.setCountdown = this.setCountdown.bind(this);
+        this.setGameMode = this.setGameMode.bind(this);
     }
     /**
      * 生命周期：数据更新
@@ -46,8 +49,23 @@ class App extends Component<Props, State> {
         if (this.state.gameType !== newGameType) {
             // 更新复杂对象的逻辑
             const { gameType, chess } = this.props.gameState;
-            this.setState({ gameType, chess });
+            this.setState({
+                gameType,
+                chess,
+            });
         }
+    }
+    /**
+     * 修改游戏模式
+     * @param boardSize 棋盘尺寸
+     * @returns string[][]
+     */
+    setGameMode (gameMode: string) {
+        const { time, gameType } = this.props.gameState;
+        const { dispatch } = this.props;
+        dispatch(initGame({ gameType }));
+        dispatch(changeMode({ gameMode }));
+        this.setGameStatus(false, time);
     }
 
     /**
@@ -71,6 +89,7 @@ class App extends Component<Props, State> {
             countdown,
         });
     }
+
     /**
      * 修改游戏状态
      * @param boardSize 棋盘尺寸
@@ -98,18 +117,19 @@ class App extends Component<Props, State> {
     // }
 
     render () {
-        const { gameOver, countdown, winner, gameType, chess } = this.state;
+        const { gameOver, countdown, winner, gameType, chess  } = this.state;
         return (
             <>
                 <Header
                     gameOver={gameOver}
                     countdown={countdown}
                     setCountdown={this.setCountdown}
-                    setGameStatus={this.setGameStatus} />
+                    setGameStatus={this.setGameStatus}/>
                 <div className='main'>
                     <StatusBar
                         gameType={gameType}
-                        chess={chess} />
+                        chess={chess}
+                        setGameMode={this.setGameMode}/>
 
                     <Game
                         gameOver={gameOver}

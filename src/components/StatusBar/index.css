@@ -39,3 +39,10 @@
     font-weight: bold;
     text-align: center;
 }
+
+.gameMode {
+    outline: none;
+    padding: 10px;
+    font-size: 15px;
+    margin-top: 20px;
+}

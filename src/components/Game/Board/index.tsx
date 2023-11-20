@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
+import clickForAI from '@/utils/judgeAI';
 import mapStateToProps from '@/utils/mapStateToProps';
 import { StateTypes } from '@/components/Game/gameConfig';
 import Square from './Square';
@@ -14,7 +15,7 @@ type Props = {
     calcGameStatus: Function;
 }
 type State = {
-    coordinate: number[];
+    isClickForAI: boolean;
 }
 /**
  * 棋盘组件，用于展示棋盘基础功能
@@ -30,11 +31,25 @@ type State = {
 class Board extends Component<Props, State> {
     constructor (props: Props) {
         super(props);
-
+        this.state = { isClickForAI: true };
         this.renderBoardEl = this.renderBoardEl.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
 
+    /**
+     * 生命周期：更新数据
+     * AI下第一颗棋
+     */
+    componentDidUpdate () {
+        const { gameMode, currentMove, chess, activeUser } = this.props.gameState;
+        if (gameMode === 'pve_computer' && currentMove === 0) {
+            const coordinate = clickForAI(this.props.board, chess, activeUser);
+            if (coordinate) {
+                const [row, colum] = coordinate;
+                this.handleClick(row, colum);
+            }
+        }
+    }
     /**
      * 下棋
      * @param row 行
@@ -54,6 +69,35 @@ class Board extends Component<Props, State> {
         recordStep(nextBoard, coordinate);
         // 计算游戏状态
         calcGameStatus(coordinate, currentMove, false);
+
+        // AI下棋
+        this.handleClickForAI(nextBoard);
+    }
+
+    /**
+     * AI下棋
+     * @param nextBoard 棋盘信息
+     */
+    handleClickForAI (nextBoard: string[][]) {
+        const { isClickForAI } = this.state;
+        const { gameMode, currentMove, chess, activeUser } = this.props.gameState;
+        if (gameMode === 'pvp') return;
+        if (gameMode === 'pve_computer' && currentMove === 0) return;
+        if (isClickForAI) {
+            const coordinate = clickForAI(nextBoard, chess, activeUser);
+            if (coordinate) {
+                // 下棋
+                const [row, colum] = coordinate;
+                setTimeout(() => {
+                    this.handleClick(row, colum);
+                }, 0);
+            } else {
+                setTimeout(() => {
+                    this.setState({ isClickForAI: !this.state.isClickForAI }); // !== isClickForAI
+                }, 0);
+            }
+        }
+        this.setState({ isClickForAI: !isClickForAI });
     }
 
     /**
