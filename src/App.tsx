@@ -38,6 +38,7 @@ class App extends Component<Props, State> {
         this.setCountdown = this.setCountdown.bind(this);
         this.setGameMode = this.setGameMode.bind(this);
     }
+
     /**
      * 生命周期：数据更新
      * @param prevProps
@@ -49,12 +50,10 @@ class App extends Component<Props, State> {
         if (this.state.gameType !== newGameType) {
             // 更新复杂对象的逻辑
             const { gameType, chess } = this.props.gameState;
-            this.setState({
-                gameType,
-                chess,
-            });
+            this.setState({ gameType, chess });
         }
     }
+
     /**
      * 修改游戏模式
      * @param boardSize 棋盘尺寸

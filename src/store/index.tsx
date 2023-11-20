@@ -41,8 +41,8 @@ function gameState (state = initialGameState, action: { type: string, nextStatus
                 ...newState,
                 gameMode: newVal.gameMode,
             };
-
             return newState;
+
         default:
             return newState;
     }

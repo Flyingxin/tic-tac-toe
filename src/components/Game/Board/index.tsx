@@ -83,15 +83,13 @@ class Board extends Component<Props, State> {
         const { gameMode, currentMove, chess, activeUser } = this.props.gameState;
         if (gameMode === 'pvp') return;
         if (gameMode === 'pve_computer' && currentMove === 0) return;
+
         if (isClickForAI) {
             const coordinate = clickForAI(nextBoard, chess, activeUser);
-            if (coordinate) {
-                // 下棋
+            if (coordinate) { // 下棋
                 const [row, colum] = coordinate;
-                setTimeout(() => {
-                    this.handleClick(row, colum);
-                }, 0);
-            } else {
+                setTimeout(() => this.handleClick(row, colum), 0);
+            } else { // 棋盘已满
                 setTimeout(() => {
                     this.setState({ isClickForAI: !this.state.isClickForAI }); // !== isClickForAI
                 }, 0);

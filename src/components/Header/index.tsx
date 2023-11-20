@@ -26,12 +26,10 @@ type State = {
 class Header extends Component<Props, State> {
     constructor (props: Props) {
         super(props);
-
-        // const { gameType, activeUser } = this.props.gameState;
-
         this.changeGame = this.changeGame.bind(this);  // 更改this指向
     }
     timerId: NodeJS.Timeout | undefined;
+
     /**
      * 切换游戏
      * @param event
@@ -55,6 +53,7 @@ class Header extends Component<Props, State> {
                 {GAME_CONFIG[item].name}
             </option>);
     });
+
     /**
      * 生命周期挂载
      * @returns
@@ -75,7 +74,6 @@ class Header extends Component<Props, State> {
         const { gameOver } = this.props;
         if (gameOver) return;
 
-
         let { countdown } = this.props;
         this.timerId = setTimeout(() => {
             this.props.setCountdown(--countdown);
@@ -88,9 +86,15 @@ class Header extends Component<Props, State> {
             clearTimeout(this.timerId);
         }
     }
+
+    /**
+     * 生命周期：卸载
+     * 卸载定时器
+     */
     componentWillUnmount () {
         if (this.timerId) clearInterval(this.timerId);
     }
+
     render () {
         const { activeUser } = this.props.gameState;
         const { gameOver, countdown } = this.props;

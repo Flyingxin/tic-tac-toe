@@ -131,32 +131,25 @@ function getEmptySquare (digitalBoard: number[][]) {
  * @returns boolean
  */
 function isGameOver (digitalBoard: number[][], player: number) {
-    // const piece = player.toString();
-    // let isGameOver = false;
-    // digitalBoard.forEach((row, rowIndex) => {
-    //     row.forEach((colum, columIndex) => {
-    //         if (calcWinner([rowIndex, columIndex], piece, 3, digitalBoard)) {
-    //             isGameOver = true;
-    //         }
-    //     });
-    // });
-    // console.log(isGameOver);
-
-    // return isGameOver;
-
     let isGameOver = false;
-    const win_state = [
-        [digitalBoard[0][0], digitalBoard[0][1], digitalBoard[0][2]],
-        [digitalBoard[1][0], digitalBoard[1][1], digitalBoard[1][2]],
-        [digitalBoard[2][0], digitalBoard[2][1], digitalBoard[2][2]],
-        [digitalBoard[0][0], digitalBoard[1][0], digitalBoard[2][0]],
-        [digitalBoard[0][1], digitalBoard[1][1], digitalBoard[2][1]],
-        [digitalBoard[0][2], digitalBoard[1][2], digitalBoard[2][2]],
-        [digitalBoard[0][0], digitalBoard[1][1], digitalBoard[2][2]],
-        [digitalBoard[2][0], digitalBoard[1][1], digitalBoard[0][2]],
-    ];
 
-    win_state.forEach(item => {
+    const winState = [];
+    const pulstitlt: number[] = [];
+    const minustitlt: number[] = [];
+    digitalBoard.forEach((item1, row) => {
+        // 水平， 垂直，
+        const vertical = item1.map((item2, colum) => digitalBoard[colum][row]);
+        winState.push(item1, vertical);
+        // 斜线
+        item1.forEach((item2, colum) => {
+            if (row === colum) pulstitlt.push(digitalBoard[row][colum]);
+            if (row + colum === 2) minustitlt.push(digitalBoard[row][colum]);
+        });
+    });
+    winState.push(pulstitlt, minustitlt);
+
+    // 判断是否获胜
+    winState.forEach(item => {
         let filled = 0;
         item.forEach(item2 => {
             if (item2 === player) filled++;
