@@ -134,19 +134,19 @@ function isGameOver (digitalBoard: number[][], player: number) {
     let isGameOver = false;
 
     const winState = [];
-    const pulstitlt: number[] = [];
-    const minustitlt: number[] = [];
+    const plusTilt: number[] = [];
+    const minusTilt: number[] = [];
     digitalBoard.forEach((item1, row) => {
         // 水平， 垂直，
         const vertical = item1.map((_item, colum) => digitalBoard[colum][row]);
         winState.push(item1, vertical);
         // 斜线
         item1.forEach((_item, colum) => {
-            if (row === colum) pulstitlt.push(digitalBoard[row][colum]);
-            if (row + colum === 2) minustitlt.push(digitalBoard[row][colum]);
+            if (row === colum) plusTilt.push(digitalBoard[row][colum]);
+            if (row + colum === 2) minusTilt.push(digitalBoard[row][colum]);
         });
     });
-    winState.push(pulstitlt, minustitlt);
+    winState.push(plusTilt, minusTilt);
 
     // 判断是否获胜
     winState.forEach(item => {
