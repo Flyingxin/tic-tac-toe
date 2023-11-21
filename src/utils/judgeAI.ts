@@ -6,7 +6,8 @@ const COMP = +1;
  * AI下棋
  * @param board
  */
-export default function clickForAI (board: string[][], chess:string[], activeUser:string) {
+export default function clickForAI (board: string[][], chess: string[], activeUser: string, boardSize:number) {
+    // 棋盘数值化处理
     const digitalBoard = setDigitalForBoard(board, chess, activeUser);
 
     let xAxis = 0;
@@ -14,11 +15,13 @@ export default function clickForAI (board: string[][], chess:string[], activeUse
     const emptySquares = getEmptySquare(digitalBoard);
     const isContinue = emptySquares.length > 0 && !gameOverAll(digitalBoard);
 
-    if (emptySquares.length === 9) {
+    // AI先手
+    if (emptySquares.length === boardSize * boardSize) {
         xAxis = 0;
         yAxis = 0;
         return [xAxis, yAxis];
     }
+
     if (isContinue) {
         const move = miniMax(digitalBoard, emptySquares.length, COMP);
         [xAxis, yAxis] = move;
@@ -44,10 +47,11 @@ function miniMax (digitalBoard:number[][], depth:number, player:number) {
         const score = evaluateScore(digitalBoard);
         return [-1, -1, score];
     }
-
+    // 广度遍历
     getEmptySquare(digitalBoard).forEach((coordinate) => {
         const [xAxis, yAxis] = coordinate;
         digitalBoard[xAxis][yAxis] = player;
+        // 深度遍历
         const score = miniMax(digitalBoard, depth - 1, -player);
 
         digitalBoard[xAxis][yAxis] = 0;
@@ -110,7 +114,7 @@ function setDigitalForBoard (board: string[][], chess: string[], activeUser:stri
 }
 
 /**
- * 获取空格坐标数组
+ * 获取空格坐标组
  * @param board
  * @returns number[][]
  */

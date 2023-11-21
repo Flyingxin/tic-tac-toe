@@ -41,9 +41,9 @@ class Board extends Component<Props, State> {
      * AI下第一颗棋
      */
     componentDidUpdate () {
-        const { gameMode, currentMove, chess, activeUser } = this.props.gameState;
+        const { gameMode, currentMove, chess, activeUser, boardSize } = this.props.gameState;
         if (gameMode === 'pve_computer' && currentMove === 0) {
-            const coordinate = clickForAI(this.props.board, chess, activeUser);
+            const coordinate = clickForAI(this.props.board, chess, activeUser, boardSize);
             if (coordinate) {
                 const [row, colum] = coordinate;
                 this.handleClick(row, colum);
@@ -80,12 +80,12 @@ class Board extends Component<Props, State> {
      */
     handleClickForAI (nextBoard: string[][]) {
         const { isClickForAI } = this.state;
-        const { gameMode, currentMove, chess, activeUser } = this.props.gameState;
+        const { gameMode, currentMove, chess, activeUser, boardSize } = this.props.gameState;
         if (gameMode === 'pvp') return;
         if (gameMode === 'pve_computer' && currentMove === 0) return;
 
         if (isClickForAI) {
-            const coordinate = clickForAI(nextBoard, chess, activeUser);
+            const coordinate = clickForAI(nextBoard, chess, activeUser, boardSize);
             if (coordinate) { // 下棋
                 const [row, colum] = coordinate;
                 setTimeout(() => this.handleClick(row, colum), 0);
