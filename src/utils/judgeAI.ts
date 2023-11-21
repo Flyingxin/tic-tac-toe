@@ -20,7 +20,7 @@ export default function clickForAI (board: string[][], chess:string[], activeUse
         return [xAxis, yAxis];
     }
     if (isContinue) {
-        const move = minimax(digitalBoard, emptySquares.length, COMP);
+        const move = miniMax(digitalBoard, emptySquares.length, COMP);
         [xAxis, yAxis] = move;
         return [xAxis, yAxis];
     }
@@ -34,7 +34,7 @@ export default function clickForAI (board: string[][], chess:string[], activeUse
  * @param player 当前选手
  * @returns number[] -- x、y与分数
  */
-function minimax (digitalBoard:number[][], depth:number, player:number) {
+function miniMax (digitalBoard:number[][], depth:number, player:number) {
     let best:number[];
     best = player === COMP ?
         [-1, -1, -1000] :
@@ -48,7 +48,7 @@ function minimax (digitalBoard:number[][], depth:number, player:number) {
     getEmptySquare(digitalBoard).forEach((coordinate) => {
         const [xAxis, yAxis] = coordinate;
         digitalBoard[xAxis][yAxis] = player;
-        const score = minimax(digitalBoard, depth - 1, -player);
+        const score = miniMax(digitalBoard, depth - 1, -player);
 
         digitalBoard[xAxis][yAxis] = 0;
         score[0] = xAxis;
@@ -138,10 +138,10 @@ function isGameOver (digitalBoard: number[][], player: number) {
     const minustitlt: number[] = [];
     digitalBoard.forEach((item1, row) => {
         // 水平， 垂直，
-        const vertical = item1.map((item2, colum) => digitalBoard[colum][row]);
+        const vertical = item1.map((_item, colum) => digitalBoard[colum][row]);
         winState.push(item1, vertical);
         // 斜线
-        item1.forEach((item2, colum) => {
+        item1.forEach((_item, colum) => {
             if (row === colum) pulstitlt.push(digitalBoard[row][colum]);
             if (row + colum === 2) minustitlt.push(digitalBoard[row][colum]);
         });
