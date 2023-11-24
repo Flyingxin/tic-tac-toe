@@ -7,11 +7,11 @@ import Game from './components/Game';
 import Header from './components/Header';
 import StatusBar from './components/StatusBar';
 import './App.css';
-type Props = {
+interface AppProps {
     gameState: StateTypes;
     dispatch: Function;
 }
-type State = {
+interface AppState  {
     gameOver: boolean;
     winner: string;
     countdown: number;
@@ -22,8 +22,8 @@ type State = {
  * App组件用于管理所有子组件
  * @returns
  */
-class App extends Component<Props, State> {
-    constructor (props: Props) {
+class App extends Component<AppProps, AppState> {
+    constructor (props: AppProps) {
         super(props);
         const { time, gameType, chess } = this.props.gameState;
         this.state = {

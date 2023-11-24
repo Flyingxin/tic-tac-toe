@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { StateTypes } from '../gameConfig';
 import mapStateToProps from '@/utils/mapStateToProps';
 import './index.css';
-type Props = {
+interface HistoryProps  {
     gameState: StateTypes;
     currentMove: number;
     axisHistory: number[][];
@@ -11,7 +11,7 @@ type Props = {
     dispatch: Function;
     calcGameStatus: Function;
 }
-type State = {
+interface HistoryState  {
 }
 /**
  * 历史记录组件
@@ -23,8 +23,8 @@ type State = {
  * @param calcGameStatus 计算游戏状态;
  * @returns component
  */
-class History extends Component<Props, State> {
-    constructor (props: Props) {
+class History extends Component<HistoryProps, HistoryState> {
+    constructor (props: HistoryProps) {
         super(props);
 
         this.jumpToStep = this.jumpToStep.bind(this);

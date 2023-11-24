@@ -5,7 +5,7 @@ import mapStateToProps from '@/utils/mapStateToProps';
 import { StateTypes } from '@/components/Game/gameConfig';
 import Square from './Square';
 import './index.css';
-type Props = {
+interface BoardProps {
     gameState: StateTypes;
     dispatch: Function;
     gameOver: boolean;
@@ -14,7 +14,7 @@ type Props = {
     recordStep: Function;
     calcGameStatus: Function;
 }
-type State = {
+interface BoardState {
     isClickForAI: boolean;
 }
 /**
@@ -28,8 +28,8 @@ type State = {
  * @param calcGameStatus 计算游戏状态
  * @returns component
  */
-class Board extends Component<Props, State> {
-    constructor (props: Props) {
+class Board extends Component<BoardProps, BoardState> {
+    constructor (props: BoardProps) {
         super(props);
         this.state = { isClickForAI: true };
         this.renderBoardEl = this.renderBoardEl.bind(this);
@@ -41,9 +41,9 @@ class Board extends Component<Props, State> {
      * AI下第一颗棋
      */
     componentDidUpdate () {
-        const { gameMode, currentMove, chess, activeUser, boardSize } = this.props.gameState;
+        const { gameMode, currentMove, activeUser, chess } = this.props.gameState;
         if (gameMode === 'pve_computer' && currentMove === 0) {
-            const coordinate = clickForAI(this.props.board, chess, activeUser, boardSize);
+            const coordinate = clickForAI(this.props.board, activeUser, chess);
             if (coordinate) {
                 const [row, colum] = coordinate;
                 this.handleClick(row, colum);
@@ -80,12 +80,12 @@ class Board extends Component<Props, State> {
      */
     handleClickForAI (nextBoard: string[][]) {
         const { isClickForAI } = this.state;
-        const { gameMode, currentMove, chess, activeUser, boardSize } = this.props.gameState;
+        const { gameMode, currentMove, activeUser, chess } = this.props.gameState;
         if (gameMode === 'pvp') return;
         if (gameMode === 'pve_computer' && currentMove === 0) return;
 
         if (isClickForAI) {
-            const coordinate = clickForAI(nextBoard, chess, activeUser, boardSize);
+            const coordinate = clickForAI(nextBoard, activeUser, chess);
             if (coordinate) { // 下棋
                 const [row, colum] = coordinate;
                 setTimeout(() => this.handleClick(row, colum), 0);

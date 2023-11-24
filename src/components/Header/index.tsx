@@ -4,7 +4,7 @@ import { initGame } from '@/store/action';
 import mapStateToProps from '@/utils/mapStateToProps';
 import GAME_CONFIG, { StateTypes } from '@/components/Game/gameConfig';
 import './index.css';
-type Props = {
+interface HeaderProps  {
     gameState: StateTypes;
     gameOver: boolean;
     countdown: number;
@@ -12,7 +12,7 @@ type Props = {
     setCountdown: Function;
     setGameStatus: Function;
 }
-type State = {
+interface HeaderState  {
 }
 /**
  * 顶部组件，用于切换游戏，游戏倒计时
@@ -23,8 +23,8 @@ type State = {
  * @param setCountDown: 修改倒计时;
  * @returns component
  */
-class Header extends Component<Props, State> {
-    constructor (props: Props) {
+class Header extends Component<HeaderProps, HeaderState> {
+    constructor (props: HeaderProps) {
         super(props);
         this.changeGame = this.changeGame.bind(this);  // 更改this指向
     }

@@ -9,7 +9,7 @@ import History from './History';
 import Notification from '../Notification';
 import './index.css';
 
-type Props = {
+interface GameProps  {
     gameState: StateTypes;
     gameOver: boolean;
     winner: string;
@@ -17,7 +17,7 @@ type Props = {
     setCountdown: Function;
     setGameStatus: Function;
 }
-type State = {
+interface GameState  {
 }
 /**
  * 游戏组件，用于管理棋盘与历史记录组件
@@ -29,8 +29,8 @@ type State = {
  * @param setGameStatus 修改游戏状态
  * @returns component
  */
-class Game extends Component<Props, State> {
-    constructor (props: Props) {
+class Game extends Component<GameProps, GameState> {
+    constructor (props: GameProps) {
         super(props);
         this.recordStep = this.recordStep.bind(this);  // 更改this指向
         this.calcGameStatus = this.calcGameStatus.bind(this);

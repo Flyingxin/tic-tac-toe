@@ -1,12 +1,12 @@
 import { PureComponent } from 'react';
 import GAME_CONFIG from '@/components/Game/gameConfig';
 import './index.css';
-type Props = {
+interface StatusBarProps  {
     gameType: string;
     chess: string[];
     setGameMode: Function;
 }
-type State = {
+interface StatusBarState  {
 }
 /**
  * 状态栏组件，呈现玩家棋子组件
@@ -14,8 +14,8 @@ type State = {
  * @param chess 棋子样式
  * @returns component
  */
-class StatusBar extends PureComponent<Props, State> {
-    constructor (props: Props) {
+class StatusBar extends PureComponent<StatusBarProps, StatusBarState> {
+    constructor (props: StatusBarProps) {
         super(props);
         this.changeMode = this.changeMode.bind(this);
     }

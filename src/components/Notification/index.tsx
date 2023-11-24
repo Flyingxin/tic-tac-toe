@@ -1,11 +1,11 @@
 import { PureComponent } from 'react';
 import './index.css';
 
-type Props = {
+interface NotificationProps  {
     gameOver: boolean;
     winner: string;
 }
-type State = {
+interface NotificationState  {
 }
 /**
  * 通知栏组件，用于展示游戏是否结束
@@ -13,7 +13,7 @@ type State = {
  * @param winner 胜利者
  * @returns component
  */
-class Notification extends PureComponent<Props, State> {
+class Notification extends PureComponent<NotificationProps, NotificationState> {
     render () {
         console.warn('Notification loading----');
 

@@ -1,13 +1,13 @@
 import { PureComponent } from 'react';
 import './index.css';
-type Props = {
+interface SquareProps {
     gameType: string;
     row: number;
     colum: number;
     value: string;
     handleClick: Function;
 }
-type State = {
+interface SquareState {
 }
 /**
  * 棋盘格子组件，用于展示格子信息
@@ -18,7 +18,7 @@ type State = {
  * @param handleClick  格子点击事件
  * @returns
  */
-class Square extends PureComponent<Props, State> {
+class Square extends PureComponent<SquareProps, SquareState> {
     render () {
         const { gameType, row, colum, value, handleClick } = this.props;
 
